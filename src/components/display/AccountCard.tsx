@@ -13,13 +13,14 @@ import {
 import dayjs from 'dayjs';
 import BankLogo from './BankLogo';
 import AccountNumber from './AccountNumber';
+import { AccountType } from '../../models/Account';
 
 type AccountCardProps = {
-  account: Account;
+  account: AccountType;
 };
 
 const AccountCard = ({ account }: AccountCardProps) => {
-  const { bank, owner, number, type, from, to, createdAt } = account;
+  const { bank, owner, number, type, transactionCount, from, to, createdAt } = account;
 
   return (
     <Card maxW="md">
@@ -39,7 +40,7 @@ const AccountCard = ({ account }: AccountCardProps) => {
       </CardHeader>
       <CardBody>
         <Text>
-          Transactions by <b>{owner}</b>
+          <b>{transactionCount}</b> transactions by <b>{owner}</b>
         </Text>
         <Text>
           done from <b>{dayjs(from).format('DD.MM.YYYY')}</b> to{' '}

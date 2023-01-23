@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom';
 
 import SimpleSidebar from './components/navigation/SimpleSidebar';
 
@@ -47,4 +47,4 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router;
+export default () => <RouterProvider router={router} />;
