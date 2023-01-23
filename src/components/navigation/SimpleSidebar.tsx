@@ -23,7 +23,7 @@ import {
   FiSettings,
   FiMenu,
 } from 'react-icons/fi';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { IconType } from 'react-icons';
 
 interface LinkItemProps {
@@ -42,6 +42,7 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
@@ -72,6 +73,8 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const location = useLocation();
+
   return (
     <Box
       bg={useColorModeValue('white', 'gray.900')}
@@ -89,7 +92,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} to={link.to}>
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          to={link.to}
+          active={location.pathname.startsWith(link.to)}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -100,9 +108,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   to: string;
+  active?: boolean;
   children: ReactText;
 }
-const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, to, active, children, ...rest }: NavItemProps) => {
   return (
     <Link as={RouterLink} to={to} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
@@ -112,6 +121,7 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={active ? 'gray.600' : ''}
         _hover={{
           bg: 'cyan.400',
           color: 'white',
