@@ -25,9 +25,9 @@ export function parseCSV(text: string): {
 
   const account = {
     number: numberHit,
-    from: dayjs(fromHit, 'DD.MM.YYYY').toISOString(),
-    to: dayjs(toHit, 'DD.MM.YYYY').toISOString(),
-    createdAt: dayjs().toISOString(),
+    from: dayjs(fromHit, 'DD.MM.YYYY').unix(),
+    to: dayjs(toHit, 'DD.MM.YYYY').unix(),
+    createdAt: dayjs().unix(),
   };
 
   const accountId = [account.number, account.from, account.to].join('_');
@@ -71,11 +71,12 @@ export function parseCSV(text: string): {
 
     return {
       id: transactionId,
-      accountId,
+      accountIds: [accountId],
+      accountNumber: numberHit,
       text,
       client,
       note,
-      timestamp: parsedDate.toISOString(),
+      timestamp: parsedDate.unix(),
       amount: normalizeCurrencyNumber(amount),
     };
   });

@@ -5,10 +5,11 @@ import { AccountObject, AccountType } from '../models/Account';
 
 import useEncryptedStorage from './useEncryptedStorage';
 
-interface AccountStore {
+type AccountStore = {
   accounts: Array<AccountType>;
   addAccount: (account: AccountType) => void;
-}
+  removeAccount: (accountId: string) => void;
+};
 
 const useAccountStore = create<AccountStore>()(
   persist(
@@ -18,15 +19,31 @@ const useAccountStore = create<AccountStore>()(
         AccountObject.parse(account);
 
         return set(
-          produce((state) => {
+          produce<AccountStore>((state) => {
             state.accounts.push(account);
           }),
         );
       },
+      removeAccount: (accountId) =>
+        set(
+          produce<AccountStore>((state) => {
+            const index = state.accounts.findIndex((account) => account.id === accountId);
+
+            if (index !== -1) state.accounts.splice(index, 1);
+          }),
+        ),
     }),
     {
       name: 'accounts',
-      storage: createJSONStorage(() => useEncryptedStorage.getState().storage),
+      storage: createJSONStorage(() => {
+        const encryptedStorage = useEncryptedStorage.getState().storage;
+
+        if (!encryptedStorage) {
+          throw new Error('No storage');
+        }
+
+        return encryptedStorage;
+      }),
       partialize: (state) => ({ accounts: state.accounts }),
     },
   ),

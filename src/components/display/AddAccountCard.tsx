@@ -19,9 +19,11 @@ import AddAccountForm from '../forms/AddAccountForm';
 import { parseCSV } from '../../plugins/dkbGiro';
 
 import useAccountStore from '../../hooks/useAccounts';
+import useTransactionsStore from '../../hooks/useTransactions';
 
 const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const addAccount = useAccountStore((state) => state.addAccount);
+  const addTransactions = useTransactionsStore((state) => state.addTransactions);
 
   const handleAddAccount = (values) => {
     const { owner, file } = values;
@@ -32,6 +34,7 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
       const { account, transactions } = parseCSV(text);
 
       addAccount({ ...account, owner });
+      addTransactions(transactions);
       onClose();
     };
     reader.readAsText(file[0]);

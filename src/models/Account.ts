@@ -7,9 +7,11 @@ export const AccountObject = z.object({
   number: z.string(),
   type: z.string(),
   transactionCount: z.number(),
-  from: z.string().datetime(),
-  to: z.string().datetime(),
-  createdAt: z.string().datetime(),
+  from: z.number(),
+  to: z.number(),
+  createdAt: z.number(),
 });
+
+export const AccountObjects = z.array(AccountObject);
 
 export type AccountType = z.infer<typeof AccountObject>;

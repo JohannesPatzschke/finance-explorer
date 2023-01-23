@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import EncryptedLocalStorage from '../utils/EncryptedLocalStorage';
+import EncryptedLocalStorage from '../utils/encryptedLocalStorage';
 
 interface EncryptedStorage {
   storage: null | EncryptedLocalStorage;
