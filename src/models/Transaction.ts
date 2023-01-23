@@ -9,6 +9,8 @@ export const TransactionObject = z.object({
   note: z.string(),
   amount: z.number(),
   timestamp: z.number(),
+  category: z.string().optional(),
+  group: z.string().optional(),
 });
 
 export const TransactionObjects = z.array(TransactionObject);
