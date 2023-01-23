@@ -13,6 +13,7 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  Highlight,
 } from '@chakra-ui/react';
 import {
   FiHome,
@@ -86,8 +87,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="lg" fontFamily="monospace" fontWeight="bold">
-          Finance Explorer
+        <Text fontSize="md" fontFamily="monospace" fontWeight="bold">
+          <Highlight
+            query="Finance"
+            styles={{ px: '2', py: '1', rounded: 'full', bg: 'teal.500', color: 'white' }}
+          >
+            Finance Explorer
+          </Highlight>
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -123,7 +129,7 @@ const NavItem = ({ icon, to, active, children, ...rest }: NavItemProps) => {
         cursor="pointer"
         bg={active ? 'gray.600' : ''}
         _hover={{
-          bg: 'cyan.400',
+          bg: 'teal.500',
           color: 'white',
         }}
         {...rest}
