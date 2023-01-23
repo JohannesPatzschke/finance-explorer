@@ -14,7 +14,15 @@ import {
   BoxProps,
   FlexProps,
 } from '@chakra-ui/react';
-import { FiHome, FiTrendingUp, FiCompass, FiStar, FiSettings, FiMenu } from 'react-icons/fi';
+import {
+  FiHome,
+  FiCreditCard,
+  FiServer,
+  FiBarChart2,
+  FiDollarSign,
+  FiSettings,
+  FiMenu,
+} from 'react-icons/fi';
 import { IconType } from 'react-icons';
 
 interface LinkItemProps {
@@ -23,9 +31,10 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
+  { name: 'Bank Accounts', icon: FiCreditCard },
+  { name: 'Categories', icon: FiServer },
+  { name: 'Transactions', icon: FiDollarSign },
+  { name: 'Explore', icon: FiBarChart2 },
   { name: 'Settings', icon: FiSettings },
 ];
 
@@ -72,8 +81,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+        <Text fontSize="lg" fontFamily="monospace" fontWeight="bold">
+          Finance Explorer
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -140,8 +149,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     >
       <IconButton variant="outline" onClick={onOpen} aria-label="open menu" icon={<FiMenu />} />
 
-      <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Logo
+      <Text fontSize="lg" ml="8" fontFamily="monospace" fontWeight="bold">
+        Finance Explorer
       </Text>
     </Flex>
   );
