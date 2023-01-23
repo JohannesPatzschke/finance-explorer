@@ -23,19 +23,21 @@ import {
   FiSettings,
   FiMenu,
 } from 'react-icons/fi';
+import { Link as RouterLink } from 'react-router-dom';
 import { IconType } from 'react-icons';
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Bank Accounts', icon: FiCreditCard },
-  { name: 'Categories', icon: FiServer },
-  { name: 'Transactions', icon: FiDollarSign },
-  { name: 'Explore', icon: FiBarChart2 },
-  { name: 'Settings', icon: FiSettings },
+  { name: 'Home', icon: FiHome, to: '/home' },
+  { name: 'Bank Accounts', icon: FiCreditCard, to: '/accounts' },
+  { name: 'Categories', icon: FiServer, to: '/categories' },
+  { name: 'Transactions', icon: FiDollarSign, to: '/transactions' },
+  { name: 'Explore', icon: FiBarChart2, to: '/explore' },
+  { name: 'Settings', icon: FiSettings, to: '/settings' },
 ];
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
@@ -87,7 +89,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} to={link.to}>
           {link.name}
         </NavItem>
       ))}
@@ -97,11 +99,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
+  to: string;
   children: ReactText;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <Link as={RouterLink} to={to} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"

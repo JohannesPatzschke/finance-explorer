@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
-import App from './App';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 
 const config = {
   useSystemColorMode: false,
@@ -13,7 +14,7 @@ const customTheme = extendTheme({ config });
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={customTheme}>
-      <App />
+      <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>,
 );
