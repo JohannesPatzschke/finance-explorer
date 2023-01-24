@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import {
   Table,
@@ -11,9 +11,13 @@ import {
   Text,
   Flex,
   IconButton,
+  Spinner,
 } from '@chakra-ui/react';
 import { FiCheck } from 'react-icons/fi';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import type { TransactionType } from '../../models/Transaction';
+
+const PAGE_SIZE = 20;
 
 type TransactionsTableProps = {
   transactions: Array<TransactionType>;
@@ -70,6 +74,10 @@ const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
 };
 
 const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
+  const [pages, setPages] = useState(1);
+
+  const transactionsSlice = transactions.slice(0, pages * PAGE_SIZE);
+
   return (
     <TableContainer>
       <Table variant="simple" size="md" maxWidth="100%">
@@ -82,9 +90,17 @@ const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          {transactions.map((transaction) => (
-            <TransactionRow key={transaction.id} transaction={transaction} />
-          ))}
+          <InfiniteScroll
+            dataLength={transactionsSlice.length}
+            next={() => setPages((current) => current + 1)}
+            hasMore={transactionsSlice.length < transactions.length}
+            loader={<Spinner />}
+            endMessage={<Text as="i">No more items</Text>}
+          >
+            {transactionsSlice.map((transaction) => (
+              <TransactionRow key={transaction.id} transaction={transaction} />
+            ))}
+          </InfiniteScroll>
         </Tbody>
       </Table>
     </TableContainer>
