@@ -11,6 +11,10 @@ import {
 } from '@chakra-ui/react';
 import useEncryptedStorage from '../../hooks/useEncryptedStorage';
 
+interface UnlockData {
+  secret: string;
+}
+
 const UnlockForm = () => {
   const { unlockStorage } = useEncryptedStorage();
 
@@ -18,9 +22,9 @@ const UnlockForm = () => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<UnlockData>();
 
-  function onSubmit(values) {
+  function onSubmit(values: UnlockData) {
     unlockStorage(values.secret);
   }
 

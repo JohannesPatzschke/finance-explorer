@@ -10,19 +10,25 @@ import {
   Box,
 } from '@chakra-ui/react';
 
-const AddAccountForm = ({ onAdd, onCancel }) => {
+interface AccountData {
+  owner: string;
+  file: FileList;
+}
+
+type AddAccountFormProps = {
+  onAdd: (values: AccountData) => void;
+  onCancel: () => void;
+};
+
+const AddAccountForm = ({ onAdd, onCancel }: AddAccountFormProps) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
-
-  function onSubmit(values) {
-    onAdd(values);
-  }
+  } = useForm<AccountData>();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onAdd)}>
       <FormControl isInvalid={!!errors.owner}>
         <FormLabel htmlFor="owner">Owner</FormLabel>
         <Input

@@ -25,13 +25,13 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const addAccount = useAccountStore((state) => state.addAccount);
   const addTransactions = useTransactionsStore((state) => state.addTransactions);
 
-  const handleAddAccount = (values) => {
+  const handleAddAccount = (values: { owner: string; file: FileList }) => {
     const { owner, file } = values;
 
     const reader = new FileReader();
     reader.onload = async (e) => {
       const text = e?.target?.result ?? '';
-      const { account, transactions } = parseCSV(text);
+      const { account, transactions } = parseCSV(text.toString());
 
       addAccount({ ...account, owner });
       addTransactions(transactions);
