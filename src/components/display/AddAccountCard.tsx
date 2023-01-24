@@ -59,7 +59,7 @@ const AddAccountCard = () => {
 
   return (
     <>
-      <Card align="center">
+      <Card align="center" variant="outline">
         <CardHeader>
           <Heading size="md">Add Account</Heading>
         </CardHeader>
@@ -70,7 +70,7 @@ const AddAccountCard = () => {
           </Text>
         </CardBody>
         <CardFooter>
-          <Button colorScheme="teal" onClick={onOpen}>
+          <Button size="sm" colorScheme="teal" onClick={onOpen}>
             Upload CSV
           </Button>
         </CardFooter>

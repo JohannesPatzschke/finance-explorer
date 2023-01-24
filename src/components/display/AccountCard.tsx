@@ -52,10 +52,10 @@ const DeleteDialog = ({
           </AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
+            <Button size="sm" ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={onDelete} ml={3}>
+            <Button size="sm" colorScheme="red" onClick={onDelete} ml={3}>
               Delete
             </Button>
           </AlertDialogFooter>
@@ -105,8 +105,8 @@ const AccountCard = ({ account }: AccountCardProps) => {
             <b>{transactionCount}</b> transactions by <b>{owner}</b>
           </Text>
           <Text>
-            done from <b>{dayjs(from).format('DD.MM.YYYY')}</b> to{' '}
-            <b>{dayjs(to).format('DD.MM.YYYY')}</b>
+            done from <b>{dayjs.unix(from).format('DD.MM.YYYY')}</b> to{' '}
+            <b>{dayjs.unix(to).format('DD.MM.YYYY')}</b>
           </Text>
         </CardBody>
         <Divider />
@@ -120,7 +120,7 @@ const AccountCard = ({ account }: AccountCardProps) => {
           }}
         >
           <Text fontSize="xs" as="i">
-            created at {dayjs(createdAt).format('DD.MM.YYYY HH:mm')}
+            created at {dayjs.unix(createdAt).format('DD.MM.YYYY HH:mm')}
           </Text>
         </CardFooter>
       </Card>

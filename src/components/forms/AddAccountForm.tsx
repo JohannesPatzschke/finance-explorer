@@ -49,10 +49,10 @@ const AddAccountForm = ({ onAdd, onCancel }) => {
       </FormControl>
       <Box textAlign="right" pt="6" pb="3">
         <ButtonGroup gap="2">
-          <Button colorScheme="teal" mr={3} isLoading={isSubmitting} onClick={onCancel}>
+          <Button size="sm" colorScheme="teal" mr={3} isLoading={isSubmitting} onClick={onCancel}>
             Close
           </Button>
-          <Button colorScheme="teal" variant="ghost" type="submit">
+          <Button size="sm" colorScheme="teal" variant="ghost" type="submit">
             Add
           </Button>
         </ButtonGroup>

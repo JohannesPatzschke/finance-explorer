@@ -40,7 +40,7 @@ const UnlockForm = () => {
       </FormControl>
       <Box textAlign="right" pt="6" pb="3">
         <ButtonGroup gap="2">
-          <Button colorScheme="teal" mr={3} isLoading={isSubmitting} type="submit">
+          <Button size="sm" colorScheme="teal" mr={3} isLoading={isSubmitting} type="submit">
             Unlock
           </Button>
         </ButtonGroup>
