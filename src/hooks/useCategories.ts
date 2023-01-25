@@ -39,6 +39,39 @@ const defaultCategories: Array<CategoryType> = [
       },
     ],
   },
+  {
+    id: 'second',
+    name: 'Lebensmittel',
+    groups: [
+      {
+        id: 'rewe',
+        name: 'REWE',
+        expressions: [
+          {
+            id: 'Rewee',
+            value: '\\bREWE\\b',
+            isRegExp: true,
+          },
+        ],
+      },
+      {
+        id: 'beimsz',
+        name: 'Bäcker',
+        expressions: [
+          {
+            id: 'beims',
+            value: '\\bbeims\\b',
+            isRegExp: true,
+          },
+          {
+            id: 'Steinecke',
+            value: 'Steinecke',
+            isRegExp: false,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 type CategoriesStore = {

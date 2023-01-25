@@ -7,6 +7,7 @@ import {
   CardBody,
   CardFooter,
   Input,
+  Box,
   Checkbox,
   List,
   ListItem,
@@ -14,6 +15,13 @@ import {
   FormControl,
   FormErrorMessage,
   CloseButton,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  ButtonGroup,
+  Heading,
 } from '@chakra-ui/react';
 import { CategoryType, GroupType } from '../../models/Category';
 
@@ -134,46 +142,76 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card variant={category ? 'filled' : 'outline'}>
-        <CardHeader>
-          <HStack justify="space-between">
-            <FormControl isInvalid={!!errors.name} maxWidth={600}>
-              <Input
-                variant="filled"
-                placeholder="Name"
-                {...register(`name`, {
-                  required: 'This is required',
-                })}
-              />
-              {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
-            </FormControl>
-            <CloseButton />
-          </HStack>
-        </CardHeader>
+      <Card variant="outline">
+        <Accordion allowToggle={true}>
+          <AccordionItem border={0}>
+            {({ isExpanded }) => (
+              <>
+                <CardHeader>
+                  <AccordionButton>
+                    <Box as="span" flex="1" textAlign="left">
+                      <FormControl isInvalid={!!errors.name} maxWidth={600}>
+                        <Input
+                          variant="filled"
+                          placeholder="Name"
+                          isReadOnly={!isExpanded}
+                          {...register(`name`, {
+                            required: 'This is required',
+                          })}
+                        />
+                        {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
+                      </FormControl>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </CardHeader>
 
-        <CardBody>
-          <List spacing={5}>
-            {fields?.map((group, groupIndex) => (
-              <GroupSection
-                key={group.id}
-                group={group}
-                index={groupIndex}
-                form={form}
-                removeDisabled={fields.length <= 1}
-                onRemove={removeGroup}
-              />
-            ))}
-          </List>
-          <br />
-          <Button size="xs" colorScheme="teal" variant="ghost" ml={8} onClick={appendGroup}>
-            Add Group
-          </Button>
-        </CardBody>
-        <CardFooter justify="end">
-          <Button size="sm" colorScheme="teal" variant="solid" type="submit" isDisabled={!isDirty}>
-            Save
-          </Button>
-        </CardFooter>
+                <AccordionPanel>
+                  <CardBody>
+                    <List spacing={5}>
+                      {fields?.map((group, groupIndex) => (
+                        <GroupSection
+                          key={group.id}
+                          group={group}
+                          index={groupIndex}
+                          form={form}
+                          removeDisabled={fields.length <= 1}
+                          onRemove={removeGroup}
+                        />
+                      ))}
+                    </List>
+                    <br />
+                    <Button
+                      size="xs"
+                      colorScheme="teal"
+                      variant="ghost"
+                      ml={8}
+                      onClick={appendGroup}
+                    >
+                      Add Group
+                    </Button>
+                  </CardBody>
+                  <CardFooter justify="end">
+                    <ButtonGroup spacing={5}>
+                      <Button size="sm" colorScheme="red" variant="outline" type="submit">
+                        Delete
+                      </Button>
+                      <Button
+                        size="sm"
+                        colorScheme="teal"
+                        variant="solid"
+                        type="submit"
+                        isDisabled={!isDirty}
+                      >
+                        Save
+                      </Button>
+                    </ButtonGroup>
+                  </CardFooter>
+                </AccordionPanel>
+              </>
+            )}
+          </AccordionItem>
+        </Accordion>
       </Card>
     </form>
   );
