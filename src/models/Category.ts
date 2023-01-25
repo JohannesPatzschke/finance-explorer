@@ -1,10 +1,20 @@
 import { z } from 'zod';
 
+export const ExpressionObject = z.object({
+  id: z.string(),
+  value: z.string(),
+  isRegExp: z.boolean(),
+});
+
+export type ExpressionType = z.infer<typeof ExpressionObject>;
+
 export const GroupObject = z.object({
   id: z.string(),
   name: z.string(),
-  expressions: z.string().array(),
+  expressions: z.array(ExpressionObject),
 });
+
+export type GroupType = z.infer<typeof GroupObject>;
 
 export const CategoryObject = z.object({
   id: z.string(),

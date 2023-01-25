@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, List, ListItem } from '@chakra-ui/react';
+import { Heading, List, ListItem, Button } from '@chakra-ui/react';
 import CategoryCard from '../components/display/CategoryCard';
 
 import useCategories from '../hooks/useCategories';
@@ -18,7 +18,9 @@ const Categories = () => {
           </ListItem>
         ))}
         <ListItem>
-          <CategoryCard />
+          <Button size="xs" colorScheme="teal" variant="ghost">
+            Add Category TODO
+          </Button>
         </ListItem>
       </List>
     </>
