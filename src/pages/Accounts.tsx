@@ -13,7 +13,7 @@ const Accounts = () => {
     <>
       <Heading size="lg">Accounts</Heading>
       <br />
-      <SimpleGrid minChildWidth={280} spacing={4}>
+      <SimpleGrid columns={{ lg: 2, xl: 3 }} spacing={4}>
         {accounts.map((account) => (
           <AccountCard key={account.id} account={account} />
         ))}

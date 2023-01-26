@@ -59,7 +59,7 @@ const AddAccountCard = () => {
 
   return (
     <>
-      <Card align="center" variant="outline">
+      <Card align="center" variant="outline" maxW="md">
         <CardHeader>
           <Heading size="md">Add Account</Heading>
         </CardHeader>

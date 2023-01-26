@@ -147,7 +147,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
           <AccordionItem border={0}>
             {({ isExpanded }) => (
               <>
-                <CardHeader>
+                <CardHeader p={isExpanded ? 4 : 1}>
                   <AccordionButton>
                     <Box as="span" flex="1" textAlign="left">
                       <FormControl isInvalid={!!errors.name} maxWidth={600}>
