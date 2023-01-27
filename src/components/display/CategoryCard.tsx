@@ -21,7 +21,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   ButtonGroup,
-  Heading,
+  useToast,
 } from '@chakra-ui/react';
 import { CategoryType, GroupType } from '../../models/Category';
 import { generateID } from '../../utils/indexing';
@@ -114,10 +114,12 @@ type CategoryCardProps = {
 
 const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
   const form = useForm<CategoryType>({ defaultValues: category });
+  const toast = useToast();
   const {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors, isDirty },
   } = form;
 
@@ -144,6 +146,13 @@ const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
 
   function onSubmit(values: CategoryType) {
     onSave(values);
+    reset(values);
+    toast({
+      title: `Category "${values.name}" saved.`,
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
   }
 
   return (

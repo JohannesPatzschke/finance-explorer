@@ -4,75 +4,7 @@ import produce from 'immer';
 import { CategoryObject, CategoryType } from '../models/Category';
 
 import useEncryptedStorage from './useEncryptedStorage';
-
-const defaultCategories: Array<CategoryType> = [
-  {
-    id: 'first',
-    name: 'Lebensmittel',
-    groups: [
-      {
-        id: 'rewe',
-        name: 'REWE',
-        expressions: [
-          {
-            id: 'Rewee',
-            value: '\\bREWE\\b',
-            isRegExp: true,
-          },
-        ],
-      },
-      {
-        id: 'beimsz',
-        name: 'Bäcker',
-        expressions: [
-          {
-            id: 'beims',
-            value: '\\bbeims\\b',
-            isRegExp: true,
-          },
-          {
-            id: 'Steinecke',
-            value: 'Steinecke',
-            isRegExp: false,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'second',
-    name: 'Lebensmittel',
-    groups: [
-      {
-        id: 'rewe',
-        name: 'REWE',
-        expressions: [
-          {
-            id: 'Rewee',
-            value: '\\bREWE\\b',
-            isRegExp: true,
-          },
-        ],
-      },
-      {
-        id: 'beimsz',
-        name: 'Bäcker',
-        expressions: [
-          {
-            id: 'beims',
-            value: '\\bbeims\\b',
-            isRegExp: true,
-          },
-          {
-            id: 'Steinecke',
-            value: 'Steinecke',
-            isRegExp: false,
-          },
-        ],
-      },
-    ],
-  },
-];
+import defaultCategories from '../constants/defaultCategories.json';
 
 type CategoriesStore = {
   categories: Array<CategoryType>;

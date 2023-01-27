@@ -1,0 +1,35 @@
+[
+  {
+    "id": "first",
+    "name": "Lebensmittel",
+    "groups": [
+      {
+        "id": "rewe",
+        "name": "Supermarkt",
+        "expressions": [
+          {
+            "id": "Rewee",
+            "value": "REWE",
+            "isRegExp": false
+          },
+          {
+            "id": "Rewee",
+            "value": "EDEKA",
+            "isRegExp": false
+          }
+        ]
+      },
+      {
+        "id": "beimsz",
+        "name": "Hello Fresh",
+        "expressions": [
+          {
+            "id": "beims",
+            "value": "HelloFresh",
+            "isRegExp": false
+          }
+        ]
+      }
+    ]
+  }
+]
