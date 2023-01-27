@@ -24,6 +24,7 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { CategoryType, GroupType } from '../../models/Category';
+import { generateID } from '../../utils/indexing';
 
 type GroupSectionProps = {
   group: GroupType;
@@ -47,7 +48,7 @@ const GroupSection = ({ group, index, form, onRemove, removeDisabled }: GroupSec
   });
 
   const appendExpression = useCallback(() => {
-    append({ id: 'asd', value: '', isRegExp: false });
+    append({ id: generateID(), value: '', isRegExp: false });
   }, [append]);
 
   const handleRemove = useCallback(() => onRemove(group, index), [onRemove, group, index]);
@@ -108,9 +109,10 @@ const GroupSection = ({ group, index, form, onRemove, removeDisabled }: GroupSec
 
 type CategoryCardProps = {
   category?: CategoryType;
+  onSave(category: CategoryType): void;
 };
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
   const form = useForm<CategoryType>({ defaultValues: category });
   const {
     control,
@@ -126,7 +128,11 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   });
 
   const appendGroup = useCallback(() => {
-    append({ id: 'asd', name: '', expressions: [{ id: 'asd', value: '', isRegExp: false }] });
+    append({
+      id: generateID(),
+      name: '',
+      expressions: [{ id: generateID(), value: '', isRegExp: false }],
+    });
   }, [append]);
 
   const removeGroup = useCallback(
@@ -137,7 +143,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
   );
 
   function onSubmit(values: CategoryType) {
-    console.log('values', values);
+    onSave(values);
   }
 
   return (

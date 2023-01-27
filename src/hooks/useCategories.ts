@@ -76,19 +76,41 @@ const defaultCategories: Array<CategoryType> = [
 
 type CategoriesStore = {
   categories: Array<CategoryType>;
+  getGroupName: (categoryId: string, groupId: string) => { category: string; group: string };
   addCategory: (category: CategoryType) => void;
+  saveCategory: (category: CategoryType) => void;
 };
 
 const useCategories = create<CategoriesStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       categories: defaultCategories,
+      getGroupName: (categoryId, groupId) => {
+        // TODO resolve with map
+        const category = get().categories.find(({ id }) => id === categoryId);
+        const group = category?.groups?.find(({ id }) => id === groupId);
+
+        return { category: category?.name ?? '', group: group?.name ?? '' };
+      },
       addCategory: (category) => {
         CategoryObject.parse(category);
 
         return set(
           produce<CategoriesStore>((state) => {
             state.categories.push(category);
+          }),
+        );
+      },
+      saveCategory: (category) => {
+        CategoryObject.parse(category);
+
+        return set(
+          produce<CategoriesStore>((state) => {
+            const index = state.categories.findIndex(({ id }) => id === category.id);
+
+            if (index !== -1) {
+              state.categories[index] = category;
+            }
           }),
         );
       },

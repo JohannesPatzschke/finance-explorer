@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { FiCheck } from 'react-icons/fi';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import useCategories from '../../hooks/useCategories';
+import useTransactions from '../../hooks/useTransactions';
 import type { TransactionType } from '../../models/Transaction';
 
 const PAGE_SIZE = 20;
@@ -24,18 +26,14 @@ type TransactionsTableProps = {
 };
 
 const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
-  const {
-    id,
-    timestamp,
-    text,
-    client,
-    note,
-    amount,
-    category = 'category',
-    group = 'group',
-  } = transaction;
+  const getGroupName = useCategories((state) => state.getGroupName);
+  const acceptSuggestion = useTransactions((state) => state.acceptSuggestion);
+  const { id, timestamp, text, client, note, amount, suggestion } = transaction;
 
-  const hasSuggestion = category?.startsWith('?');
+  const { categoryId, groupId } = suggestion ?? transaction;
+
+  const { category = '', group = '' } =
+    categoryId && groupId ? getGroupName(categoryId, groupId) : {};
 
   return (
     <Tr>
@@ -49,18 +47,19 @@ const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
       <Td>
         <Flex direction="row" align="center" justify="space-between">
           <div>
-            <Text>{category}</Text>
+            <Text>{category ?? '-'}</Text>
             <Text fontSize="xs" as="i">
               {group}
             </Text>
           </div>
-          {hasSuggestion && (
+          {suggestion && (
             <IconButton
               ml="3"
               size="xs"
               colorScheme="yellow"
               aria-label="Accept suggestion"
               icon={<FiCheck />}
+              onClick={() => acceptSuggestion(id)}
             />
           )}
         </Flex>
@@ -95,7 +94,7 @@ const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
             next={() => setPages((current) => current + 1)}
             hasMore={transactionsSlice.length < transactions.length}
             loader={<Spinner />}
-            endMessage={<Text as="i">No more items</Text>}
+            endMessage={<Text as="i">END</Text>}
           >
             {transactionsSlice.map((transaction) => (
               <TransactionRow key={transaction.id} transaction={transaction} />

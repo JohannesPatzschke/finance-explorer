@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+export const SuggestionObject = z.object({
+  categoryId: z.string(),
+  groupId: z.string(),
+});
+
+export type SuggestionType = z.infer<typeof SuggestionObject>;
+
 export const TransactionObject = z.object({
   id: z.string(),
   accountIds: z.string().array(),
@@ -9,8 +16,9 @@ export const TransactionObject = z.object({
   note: z.string(),
   amount: z.number(),
   timestamp: z.number(),
-  category: z.string().optional(),
-  group: z.string().optional(),
+  categoryId: z.string().optional(),
+  groupId: z.string().optional(),
+  suggestion: SuggestionObject.optional(),
 });
 
 export const TransactionObjects = z.array(TransactionObject);
