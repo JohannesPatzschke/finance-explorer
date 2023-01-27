@@ -32,7 +32,7 @@ const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
 
   const { categoryId, groupId } = suggestion ?? transaction;
 
-  const { category = '', group = '' } =
+  const { category = '-', group = '' } =
     categoryId && groupId ? getGroupName(categoryId, groupId) : {};
 
   return (
@@ -79,29 +79,29 @@ const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
 
   return (
     <TableContainer>
-      <Table variant="simple" size="md" maxWidth="100%">
-        <Thead>
-          <Tr>
-            <Th>Date</Th>
-            <Th isNumeric>Value</Th>
-            <Th>Category</Th>
-            <Th>Description</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <InfiniteScroll
-            dataLength={transactionsSlice.length}
-            next={() => setPages((current) => current + 1)}
-            hasMore={transactionsSlice.length < transactions.length}
-            loader={<Spinner />}
-            endMessage={<Text as="i">END</Text>}
-          >
+      <InfiniteScroll
+        dataLength={transactionsSlice.length}
+        next={() => setPages((current) => current + 1)}
+        hasMore={transactionsSlice.length < transactions.length}
+        loader={<Spinner />}
+        endMessage={<Text as="i">END</Text>}
+      >
+        <Table variant="simple" size="md" maxWidth="100%">
+          <Thead>
+            <Tr>
+              <Th>Date</Th>
+              <Th isNumeric>Value</Th>
+              <Th>Category</Th>
+              <Th>Description</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
             {transactionsSlice.map((transaction) => (
               <TransactionRow key={transaction.id} transaction={transaction} />
             ))}
-          </InfiniteScroll>
-        </Tbody>
-      </Table>
+          </Tbody>
+        </Table>
+      </InfiniteScroll>
     </TableContainer>
   );
 };
