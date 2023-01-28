@@ -8,6 +8,8 @@ import useEncryptedStorage from './useEncryptedStorage';
 
 type TransactionsStore = {
   transactions: Array<TransactionType>;
+  setTransactions: (transactions: Array<TransactionType>) => void;
+  resetTransactions: () => void;
   addTransactions: (transactions: Array<TransactionType>) => void;
   addSuggestions: (category: CategoryType) => void;
   acceptSuggestion: (transactionId: string) => void;
@@ -51,6 +53,8 @@ const useTransactionsStore = create<TransactionsStore>()(
   persist(
     (set) => ({
       transactions: [],
+      setTransactions: (transactions) => set(() => ({ transactions })),
+      resetTransactions: () => set(() => ({ transactions: [] })),
       addTransactions: (transactions) => {
         TransactionObjects.parse(transactions);
 

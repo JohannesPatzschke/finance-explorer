@@ -1,7 +1,13 @@
 import React from 'react';
+import { Heading } from '@chakra-ui/react';
 
 const Explore = () => {
-  return <div>Explore</div>;
+  return (
+    <>
+      <Heading size="lg">Explore</Heading>
+      <br />
+    </>
+  );
 };
 
 export default Explore;

@@ -1,7 +1,13 @@
 import React from 'react';
+import { Heading } from '@chakra-ui/react';
 
 const Home = () => {
-  return <div>HOME</div>;
+  return (
+    <>
+      <Heading size="lg">Home</Heading>
+      <br />
+    </>
+  );
 };
 
 export default Home;

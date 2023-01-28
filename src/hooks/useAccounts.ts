@@ -7,6 +7,8 @@ import useEncryptedStorage from './useEncryptedStorage';
 
 type AccountStore = {
   accounts: Array<AccountType>;
+  setAccounts: (accounts: Array<AccountType>) => void;
+  resetAccounts: () => void;
   addAccount: (account: AccountType) => void;
   removeAccount: (accountId: string) => void;
 };
@@ -15,6 +17,8 @@ const useAccountStore = create<AccountStore>()(
   persist(
     (set) => ({
       accounts: [],
+      setAccounts: (accounts) => set(() => ({ accounts })),
+      resetAccounts: () => set(() => ({ accounts: [] })),
       addAccount: (account) => {
         AccountObject.parse(account);
 
