@@ -146,7 +146,7 @@ const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
 
   function onSubmit(values: CategoryType) {
     onSave(values);
-    reset(values);
+    reset({}, { keepValues: true });
     toast({
       title: `Category "${values.name}" saved.`,
       status: 'success',
