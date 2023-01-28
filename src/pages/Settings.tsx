@@ -138,6 +138,7 @@ const Settings = () => {
                 leftIcon={<FiDownload />}
                 colorScheme="teal"
                 variant="outline"
+                size="sm"
                 onClick={() =>
                   downloadJSON(`finance_explorer_export_${dayjs().unix()}`, {
                     accounts,
@@ -159,6 +160,7 @@ const Settings = () => {
                 leftIcon={<FiUpload />}
                 colorScheme="teal"
                 variant="outline"
+                size="sm"
                 onChange={handleImport}
               >
                 Import
@@ -174,6 +176,7 @@ const Settings = () => {
                 leftIcon={<FiTrash />}
                 colorScheme="red"
                 variant="outline"
+                size="sm"
                 onClick={() => {
                   resetAccounts();
                   resetTransactions();
@@ -183,7 +186,7 @@ const Settings = () => {
               </Button>
             ),
             title: 'Delete accounts & transaction',
-            description: 'Clear your imported data',
+            description: 'Clear your imported bank data',
           },
           {
             key: 'clearCategories',
@@ -192,6 +195,7 @@ const Settings = () => {
                 leftIcon={<FiTrash />}
                 colorScheme="red"
                 variant="outline"
+                size="sm"
                 onClick={() => resetCategories()}
               >
                 Categories
@@ -207,6 +211,7 @@ const Settings = () => {
                 leftIcon={<FiTrash />}
                 colorScheme="red"
                 variant="outline"
+                size="sm"
                 onClick={() => {
                   resetAccounts();
                   resetCategories();
