@@ -13,6 +13,7 @@ type CategoriesStore = {
   getGroupName: (categoryId: string, groupId: string) => { category: string; group: string };
   addCategory: (category: CategoryType) => void;
   saveCategory: (category: CategoryType) => void;
+  removeCategory: (categoryId: string) => void;
 };
 
 const useCategories = create<CategoriesStore>()(
@@ -50,6 +51,16 @@ const useCategories = create<CategoriesStore>()(
           }),
         );
       },
+      removeCategory: (categoryId) =>
+        set(
+          produce<CategoriesStore>((state) => {
+            const index = state.categories.findIndex(({ id }) => id === categoryId);
+
+            if (index !== -1) {
+              state.categories.splice(index, 1);
+            }
+          }),
+        ),
     }),
     {
       name: 'categories',

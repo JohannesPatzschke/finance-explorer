@@ -23,8 +23,8 @@ import {
   ButtonGroup,
   useToast,
 } from '@chakra-ui/react';
-import { CategoryType, GroupType } from '../../models/Category';
-import { generateID } from '../../utils/indexing';
+import { CategoryType, GroupType } from '@models/Category';
+import { generateID } from '@utils/indexing';
 
 type GroupSectionProps = {
   group: GroupType;
@@ -109,10 +109,11 @@ const GroupSection = ({ group, index, form, onRemove, removeDisabled }: GroupSec
 
 type CategoryCardProps = {
   category?: CategoryType;
+  onRemove(categoryId: string): void;
   onSave(category: CategoryType): void;
 };
 
-const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
+const CategoryCard = ({ category, onRemove, onSave }: CategoryCardProps) => {
   const form = useForm<CategoryType>({ defaultValues: category });
   const toast = useToast();
   const {
@@ -143,6 +144,12 @@ const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
     },
     [remove],
   );
+
+  const handleRemove = useCallback(() => {
+    if (category?.id) {
+      onRemove(category?.id);
+    }
+  }, [category?.id]);
 
   function onSubmit(values: CategoryType) {
     onSave(values);
@@ -208,7 +215,7 @@ const CategoryCard = ({ category, onSave }: CategoryCardProps) => {
                   </CardBody>
                   <CardFooter justify="end">
                     <ButtonGroup spacing={5}>
-                      <Button size="sm" colorScheme="red" variant="outline" type="submit">
+                      <Button size="sm" colorScheme="red" variant="outline" onClick={handleRemove}>
                         Delete
                       </Button>
                       <Button
