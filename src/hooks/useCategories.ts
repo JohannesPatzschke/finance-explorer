@@ -10,6 +10,7 @@ type CategoriesStore = {
   categories: Array<CategoryType>;
   setCategories: (categories: Array<CategoryType>) => void;
   resetCategories: () => void;
+  getCategoryName: (categoryId: string) => { category: string };
   getGroupName: (categoryId: string, groupId: string) => { category: string; group: string };
   addCategory: (category: CategoryType) => void;
   saveCategory: (category: CategoryType) => void;
@@ -22,6 +23,12 @@ const useCategories = create<CategoriesStore>()(
       categories: defaultCategories,
       setCategories: (categories) => set(() => ({ categories })),
       resetCategories: () => set(() => ({ categories: defaultCategories })),
+      getCategoryName: (categoryId) => {
+        // TODO resolve with map
+        const category = get().categories.find(({ id }) => id === categoryId);
+
+        return { category: category?.name ?? '' };
+      },
       getGroupName: (categoryId, groupId) => {
         // TODO resolve with map
         const category = get().categories.find(({ id }) => id === categoryId);
