@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { groupBy } from 'lodash';
-import { Heading } from '@chakra-ui/react';
+import { Heading, Stat, StatLabel, StatNumber, HStack } from '@chakra-ui/react';
 import { PieChart, Pie, Legend, Tooltip, Label } from 'recharts';
 import useTransactions from '@hooks/useTransactions';
 import useCategories from '@hooks/useCategories';
@@ -39,6 +39,16 @@ const Explore = () => {
 
   const pieData = calculatePieData(transactions);
 
+  const income = useMemo(
+    () => transactions.reduce((sum, { amount }) => (amount >= 0 ? sum + amount : sum), 0),
+    [transactions],
+  );
+
+  const outcome = useMemo(
+    () => transactions.reduce((sum, { amount }) => (amount < 0 ? sum + amount : sum), 0),
+    [transactions],
+  );
+
   return (
     <>
       <Heading size="lg">Explore</Heading>
@@ -58,6 +68,21 @@ const Explore = () => {
         <Tooltip />
         <Legend verticalAlign="top" height={36} />
       </PieChart>
+
+      <HStack>
+        <Stat>
+          <StatLabel>Income</StatLabel>
+          <StatNumber>{income.toFixed(2)} €</StatNumber>
+        </Stat>
+        <Stat>
+          <StatLabel>Outcome</StatLabel>
+          <StatNumber>{outcome.toFixed(2)} €</StatNumber>
+        </Stat>
+        <Stat>
+          <StatLabel>Bilance</StatLabel>
+          <StatNumber>{(income + outcome).toFixed(2)} €</StatNumber>
+        </Stat>
+      </HStack>
     </>
   );
 };
