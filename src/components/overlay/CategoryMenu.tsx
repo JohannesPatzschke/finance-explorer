@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, MenuItem, Slide, Box } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import { FiArrowLeft } from 'react-icons/fi';
 import useCategories from '@hooks/useCategories';
 import { CategoryType } from '@models/Category';
@@ -26,8 +27,22 @@ const CategoryMenu = ({ isOpen, onSelect }: CategoryMenu) => {
           </MenuItem>
         ))}
       </div>
-      <Slide direction="right" in={!!selectedCategory} style={{ zIndex: 10 }}>
-        <Box p="10px" bg="gray.600" rounded="md" shadow="md">
+      <Slide
+        direction="right"
+        in={!!selectedCategory}
+        unmountOnExit={true}
+        transition={{ enter: { duration: 0.2 } }}
+      >
+        <Box
+          as={motion.div}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          p="10px"
+          bg="gray.600"
+          rounded="md"
+          shadow="md"
+        >
           <MenuItem onClick={() => setSelectedCategory(null)}>
             <FiArrowLeft />
           </MenuItem>
