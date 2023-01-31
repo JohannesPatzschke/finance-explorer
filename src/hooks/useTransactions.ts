@@ -11,6 +11,7 @@ type TransactionsStore = {
   setTransactions: (transactions: Array<TransactionType>) => void;
   resetTransactions: () => void;
   addTransactions: (transactions: Array<TransactionType>) => void;
+  setCategory: (transactionId: string, categoryId: string, groupId: string) => void;
   addSuggestions: (category: CategoryType) => void;
   acceptSuggestion: (transactionId: string) => void;
   acceptSuggestions: (transactionIds: Array<string>) => void;
@@ -61,6 +62,20 @@ const useTransactionsStore = create<TransactionsStore>()(
         return set(
           produce<TransactionsStore>((state) => {
             state.transactions.push(...transactions);
+          }),
+        );
+      },
+      setCategory: (transactionId, categoryId, groupId) => {
+        return set(
+          produce<TransactionsStore>((state) => {
+            const index = state.transactions.findIndex(({ id }) => id === transactionId);
+
+            if (index !== -1) {
+              state.transactions[index].categoryId = categoryId;
+              state.transactions[index].groupId = groupId;
+
+              delete state.transactions[index].suggestion;
+            }
           }),
         );
       },

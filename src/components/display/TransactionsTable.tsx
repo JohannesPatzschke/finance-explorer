@@ -12,12 +12,18 @@ import {
   Flex,
   IconButton,
   Spinner,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  Tag,
 } from '@chakra-ui/react';
 import { FiCheck } from 'react-icons/fi';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import useCategories from '../../hooks/useCategories';
-import useTransactions from '../../hooks/useTransactions';
-import type { TransactionType } from '../../models/Transaction';
+import useCategories from '@hooks/useCategories';
+import useTransactions from '@hooks/useTransactions';
+import CategoryMenu from '@components/overlay/CategoryMenu';
+import type { TransactionType } from '@models/Transaction';
 
 const PAGE_SIZE = 20;
 
@@ -25,7 +31,17 @@ type TransactionsTableProps = {
   transactions: Array<TransactionType>;
 };
 
-const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
+type TransactionRowProps = {
+  transaction: TransactionType;
+  isPopoverTarget?: boolean;
+  onCategoryClick(): void;
+};
+
+const TransactionRow = ({
+  transaction,
+  isPopoverTarget = false,
+  onCategoryClick,
+}: TransactionRowProps) => {
   const getGroupName = useCategories((state) => state.getGroupName);
   const acceptSuggestion = useTransactions((state) => state.acceptSuggestion);
   const { id, timestamp, text, client, note, amount, suggestion } = transaction;
@@ -47,7 +63,16 @@ const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
       <Td>
         <Flex direction="row" align="center" justify="space-between">
           <div>
-            <Text>{category ?? '-'}</Text>
+            {isPopoverTarget ? (
+              <PopoverTrigger>
+                <Tag>{category ?? '-'}</Tag>
+              </PopoverTrigger>
+            ) : (
+              <Tag colorScheme="teal" cursor="pointer" onClick={onCategoryClick}>
+                {category ?? '-'}
+              </Tag>
+            )}
+            <br />
             <Text fontSize="xs" as="i">
               {group}
             </Text>
@@ -74,35 +99,71 @@ const TransactionRow = ({ transaction }: { transaction: TransactionType }) => {
 
 const TransactionsTable = ({ transactions }: TransactionsTableProps) => {
   const [pages, setPages] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const setCategory = useTransactions((state) => state.setCategory);
+
+  const handleCategoryClick = (index: number) => {
+    setSelectedIndex(index);
+  };
+
+  const handleCategorySelect = (categoryId: string, groupId: string) => {
+    const transactionId = selectedIndex !== null ? transactions[selectedIndex]?.id : null;
+
+    if (transactionId) {
+      setCategory(transactionId, categoryId, groupId);
+    }
+
+    setSelectedIndex(null);
+  };
 
   const transactionsSlice = transactions.slice(0, pages * PAGE_SIZE);
 
   return (
-    <TableContainer>
-      <InfiniteScroll
-        dataLength={transactionsSlice.length}
-        next={() => setPages((current) => current + 1)}
-        hasMore={transactionsSlice.length < transactions.length}
-        loader={<Spinner />}
-        endMessage={<Text as="i">END</Text>}
-      >
-        <Table variant="simple" size="md" maxWidth="100%">
-          <Thead>
-            <Tr>
-              <Th>Date</Th>
-              <Th isNumeric>Value</Th>
-              <Th>Category</Th>
-              <Th>Description</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {transactionsSlice.map((transaction) => (
-              <TransactionRow key={transaction.id} transaction={transaction} />
-            ))}
-          </Tbody>
-        </Table>
-      </InfiniteScroll>
-    </TableContainer>
+    <Popover
+      returnFocusOnClose={false}
+      isOpen={selectedIndex !== null}
+      onClose={() => setSelectedIndex(null)}
+      placement="right"
+      closeOnBlur={true}
+    >
+      <TableContainer>
+        <InfiniteScroll
+          dataLength={transactionsSlice.length}
+          next={() => setPages((current) => current + 1)}
+          hasMore={transactionsSlice.length < transactions.length}
+          loader={<Spinner />}
+          endMessage={<Text as="i">END</Text>}
+        >
+          <Table variant="simple" size="md" maxWidth="100%">
+            <Thead>
+              <Tr>
+                <Th>Date</Th>
+                <Th isNumeric>Value</Th>
+                <Th>Category</Th>
+                <Th>Description</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {transactionsSlice.map((transaction, index) => (
+                <TransactionRow
+                  key={transaction.id}
+                  transaction={transaction}
+                  isPopoverTarget={selectedIndex === index}
+                  onCategoryClick={() => handleCategoryClick(index)}
+                />
+              ))}
+            </Tbody>
+          </Table>
+        </InfiniteScroll>
+      </TableContainer>
+      <PopoverContent>
+        {selectedIndex !== null && (
+          <PopoverBody>
+            <CategoryMenu isOpen={selectedIndex !== null} onSelect={handleCategorySelect} />
+          </PopoverBody>
+        )}
+      </PopoverContent>
+    </Popover>
   );
 };
 
