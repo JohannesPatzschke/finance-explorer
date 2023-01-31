@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { groupBy } from 'lodash';
 import { Heading, Stat, StatLabel, StatNumber, HStack } from '@chakra-ui/react';
 import { PieChart, Pie, Legend, Tooltip, Label } from 'recharts';
-import useTransactions from '@hooks/useTransactions';
+import TransactionFilter from '@components/forms/TransactionFilter';
+import useFilteredTransactions from '@hooks/useFilteredTransactions';
 import useCategories from '@hooks/useCategories';
 import { TransactionType } from '@models/Transaction';
 
@@ -28,14 +29,14 @@ function calculatePieData(transactions: Array<TransactionType>) {
 
     return {
       name: category,
-      value: Math.round(value * 100) / 100,
+      value: Math.abs(Math.round(value * 100) / 100),
       fill: COLOR_PALETTE[index],
     };
   });
 }
 
 const Explore = () => {
-  const transactions = useTransactions((state) => state.transactions);
+  const transactions = useFilteredTransactions();
 
   const pieData = calculatePieData(transactions);
 
@@ -52,6 +53,8 @@ const Explore = () => {
   return (
     <>
       <Heading size="lg">Explore</Heading>
+      <br />
+      <TransactionFilter />
       <br />
 
       <PieChart width={400} height={400}>

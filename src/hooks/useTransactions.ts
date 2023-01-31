@@ -50,7 +50,7 @@ function processCategory(transaction: TransactionType, category: CategoryType) {
   return transaction;
 }
 
-const useTransactionsStore = create<TransactionsStore>()(
+const useTransactions = create<TransactionsStore>()(
   persist(
     (set) => ({
       transactions: [],
@@ -136,4 +136,4 @@ const useTransactionsStore = create<TransactionsStore>()(
   ),
 );
 
-export default useTransactionsStore;
+export default useTransactions;
