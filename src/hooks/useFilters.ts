@@ -6,6 +6,7 @@ import { CategoryFilterMapType } from '@models/Filters';
 
 type FiltersStore = {
   categoryMap: CategoryFilterMapType;
+  setFilters: (filters: Pick<FiltersStore, 'categoryMap'>) => void;
   setCategory(categoryId: string, values: boolean | Array<string>): void;
 };
 
@@ -13,6 +14,7 @@ const useFilters = create<FiltersStore>()(
   persist(
     (set) => ({
       categoryMap: {},
+      setFilters: (filters) => set(() => filters),
       setCategory: (categoryId, values) =>
         set(
           produce<FiltersStore>((state) => {

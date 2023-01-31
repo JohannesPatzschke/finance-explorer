@@ -50,13 +50,31 @@ const Explore = () => {
     [transactions],
   );
 
+  const bilance = income + outcome;
+
   return (
     <>
       <Heading size="lg">Explore</Heading>
       <br />
       <TransactionFilter />
       <br />
-
+      <HStack>
+        <Stat>
+          <StatLabel>Income</StatLabel>
+          <StatNumber>{income.toFixed(2)} €</StatNumber>
+        </Stat>
+        <Stat>
+          <StatLabel>Outcome</StatLabel>
+          <StatNumber>{outcome.toFixed(2)} €</StatNumber>
+        </Stat>
+        <Stat>
+          <StatLabel>Bilance</StatLabel>
+          <StatNumber color={bilance >= 0 ? 'green.300' : 'red.300'}>
+            {bilance.toFixed(2)} €
+          </StatNumber>
+        </Stat>
+      </HStack>
+      <br />
       <PieChart width={400} height={400}>
         <Pie
           dataKey="value"
@@ -71,21 +89,6 @@ const Explore = () => {
         <Tooltip />
         <Legend verticalAlign="top" height={36} />
       </PieChart>
-
-      <HStack>
-        <Stat>
-          <StatLabel>Income</StatLabel>
-          <StatNumber>{income.toFixed(2)} €</StatNumber>
-        </Stat>
-        <Stat>
-          <StatLabel>Outcome</StatLabel>
-          <StatNumber>{outcome.toFixed(2)} €</StatNumber>
-        </Stat>
-        <Stat>
-          <StatLabel>Bilance</StatLabel>
-          <StatNumber>{(income + outcome).toFixed(2)} €</StatNumber>
-        </Stat>
-      </HStack>
     </>
   );
 };

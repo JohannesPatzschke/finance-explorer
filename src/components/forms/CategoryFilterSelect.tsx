@@ -17,6 +17,7 @@ import produce from 'immer';
 import useCategories from '@hooks/useCategories';
 import useFilters from '@hooks/useFilters';
 import { CategoryType } from '@models/Category';
+import { shallow } from 'zustand/shallow';
 
 type CategoryCheckboxGroupProps = {
   category: CategoryType;
@@ -91,7 +92,10 @@ type CategoryFilterSelectProps = {
 };
 
 const CategoryFilterSelect = ({}: CategoryFilterSelectProps) => {
-  const [categoryMap, setCategory] = useFilters((state) => [state.categoryMap, state.setCategory]);
+  const [categoryMap, setCategory] = useFilters(
+    (state) => [state.categoryMap, state.setCategory],
+    shallow,
+  );
   const categories = useCategories((state) => state.categories);
 
   const onFilterChange = (categoryId: string, values: boolean | Array<string>) => {
@@ -118,6 +122,7 @@ const CategoryFilterSelect = ({}: CategoryFilterSelectProps) => {
               <CategoryCheckboxGroup
                 key={category.id}
                 category={category}
+                defaultChecked={categoryMap[category.id]}
                 onChange={(values) => onFilterChange(category.id, values)}
               />
             ))}

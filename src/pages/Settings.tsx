@@ -23,6 +23,7 @@ import useCategories from '@hooks/useCategories';
 import useTransactions from '@hooks/useTransactions';
 import { BackupObject } from '@models/Backup';
 import { downloadJSON, readJSONFile } from '@utils/JSONFiles';
+import useFilters from '@hooks/useFilters';
 
 type EntryProps = {
   key: string;
@@ -79,6 +80,10 @@ const Settings = () => {
     (state) => [state.transactions, state.setTransactions, state.resetTransactions],
     shallow,
   );
+  const [categoryMap, setFilters] = useFilters(
+    (state) => [state.categoryMap, state.setFilters],
+    shallow,
+  );
 
   const handleImport = async (files: FileList | null) => {
     if (files?.[0]) {
@@ -90,6 +95,7 @@ const Settings = () => {
         setAccounts(backup.accounts);
         setCategories(backup.categories);
         setTransactions(backup.transactions);
+        setFilters(backup.filters);
         toast({
           title: `Backup successfully imported`,
           status: 'success',
@@ -144,6 +150,7 @@ const Settings = () => {
                     accounts,
                     categories,
                     transactions,
+                    filters: { categoryMap },
                   })
                 }
               >
