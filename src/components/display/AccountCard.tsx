@@ -22,8 +22,9 @@ import {
 import dayjs from 'dayjs';
 import BankLogo from './BankLogo';
 import AccountNumber from './AccountNumber';
-import { AccountType } from '../../models/Account';
-import useAccounts from '../../hooks/useAccounts';
+import { AccountType } from '@models/Account';
+import useAccounts from '@hooks/useAccounts';
+import useTransactions from '@hooks/useTransactions';
 
 const DeleteDialog = ({
   isOpen,
@@ -71,6 +72,7 @@ type AccountCardProps = {
 
 const AccountCard = ({ account }: AccountCardProps) => {
   const removeAccount = useAccounts((state) => state.removeAccount);
+  const removeTransactionsByAccount = useTransactions((state) => state.removeTransactionsByAccount);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { id, bank, owner, number, type, transactionCount, from, to, createdAt } = account;
@@ -78,6 +80,7 @@ const AccountCard = ({ account }: AccountCardProps) => {
   const handleDelete = useCallback(() => {
     onClose();
     removeAccount(id);
+    removeTransactionsByAccount(id);
   }, [id]);
 
   return (

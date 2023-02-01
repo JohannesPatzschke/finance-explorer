@@ -1,15 +1,17 @@
 import { create } from 'zustand';
+import { orderBy } from 'lodash';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import produce from 'immer';
 import { TransactionObjects, TransactionType } from '../models/Transaction';
 import { CategoryType } from '../models/Category';
-
+import useCategories from './useCategories';
 import useEncryptedStorage from './useEncryptedStorage';
 
 type TransactionsStore = {
   transactions: Array<TransactionType>;
   setTransactions: (transactions: Array<TransactionType>) => void;
   resetTransactions: () => void;
+  removeTransactionsByAccount: (accountId: string) => void;
   addTransactions: (transactions: Array<TransactionType>) => void;
   setCategory: (transactionId: string, categoryId: string, groupId: string) => void;
   addSuggestions: (category: CategoryType) => void;
@@ -50,20 +52,50 @@ function processCategory(transaction: TransactionType, category: CategoryType) {
   return transaction;
 }
 
+function categorizeTransaction(transaction: TransactionType) {
+  const categories = useCategories.getState().categories;
+
+  let categorizedTransaction: TransactionType = transaction;
+
+  for (const category of categories) {
+    categorizedTransaction = processCategory(transaction, category);
+
+    if (categorizedTransaction.categoryId) {
+      return categorizedTransaction;
+    }
+  }
+
+  return transaction;
+}
+
 const useTransactions = create<TransactionsStore>()(
   persist(
     (set) => ({
       transactions: [],
       setTransactions: (transactions) => set(() => ({ transactions })),
       resetTransactions: () => set(() => ({ transactions: [] })),
+      removeTransactionsByAccount: (accountId) =>
+        set((state) => ({
+          transactions: state.transactions
+            .map(({ accountIds, ...rest }) => ({
+              ...rest,
+              accountIds: accountIds.filter((id) => id !== accountId),
+            }))
+            .filter(({ accountIds }) => accountIds.length !== 0),
+        })),
       addTransactions: (transactions) => {
         TransactionObjects.parse(transactions);
 
-        return set(
-          produce<TransactionsStore>((state) => {
-            state.transactions.push(...transactions);
-          }),
-        );
+        const categorizedTransactions: Array<TransactionType> =
+          transactions.map(categorizeTransaction);
+
+        return set((state) => ({
+          transactions: orderBy(
+            state.transactions.concat(categorizedTransactions),
+            'timestamp',
+            'desc',
+          ),
+        }));
       },
       setCategory: (transactionId, categoryId, groupId) => {
         return set(

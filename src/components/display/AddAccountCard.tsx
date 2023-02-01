@@ -16,7 +16,8 @@ import {
   CardFooter,
 } from '@chakra-ui/react';
 import AddAccountForm from '../forms/AddAccountForm';
-import { parseCSV } from '../../plugins/dkbGiro';
+import { parseCSV as parseDKB } from '../../plugins/dkbGiro';
+import { parseCSV as parseN26 } from '../../plugins/n26';
 
 import useAccountStore from '../../hooks/useAccounts';
 import useTransactionsStore from '../../hooks/useTransactions';
@@ -25,13 +26,20 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
   const addAccount = useAccountStore((state) => state.addAccount);
   const addTransactions = useTransactionsStore((state) => state.addTransactions);
 
-  const handleAddAccount = (values: { owner: string; file: FileList }) => {
-    const { owner, file } = values;
+  const handleAddAccount = (values: {
+    plugin: string;
+    owner: string;
+    number?: string;
+    file: FileList;
+  }) => {
+    const { plugin, owner, number, file } = values;
 
     const reader = new FileReader();
     reader.onload = async (e) => {
       const text = e?.target?.result ?? '';
-      const { account, transactions } = parseCSV(text.toString());
+
+      const { account, transactions } =
+        plugin === 'dkb' ? parseDKB(text.toString()) : parseN26(text.toString(), number ?? '');
 
       addAccount({ ...account, owner });
       addTransactions(transactions);
@@ -66,7 +74,7 @@ const AddAccountCard = () => {
         <CardBody>
           <Text>Upload a bank statement to add some transactions.</Text>
           <Text fontSize="xs" as="i">
-            (Only DKB giro accounts are currently supported)
+            (Only DKB giro and N26 accounts are currently supported)
           </Text>
         </CardBody>
         <CardFooter>

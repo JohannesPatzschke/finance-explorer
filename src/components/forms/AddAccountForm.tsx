@@ -8,10 +8,13 @@ import {
   Input,
   Button,
   Box,
+  Select,
 } from '@chakra-ui/react';
 
 interface AccountData {
+  plugin: string;
   owner: string;
+  number?: string;
   file: FileList;
 }
 
@@ -23,12 +26,27 @@ type AddAccountFormProps = {
 const AddAccountForm = ({ onAdd, onCancel }: AddAccountFormProps) => {
   const {
     handleSubmit,
+    watch,
     register,
     formState: { errors, isSubmitting },
   } = useForm<AccountData>();
 
   return (
     <form onSubmit={handleSubmit(onAdd)}>
+      <FormControl isInvalid={!!errors.plugin}>
+        <FormLabel htmlFor="plugin">Plugin</FormLabel>
+        <Select
+          placeholder="Select option"
+          {...register('plugin', {
+            required: 'This is required',
+          })}
+        >
+          <option value="dkb">DKB Giro</option>
+          <option value="n26">N26 Standard</option>
+        </Select>
+        <FormErrorMessage>{errors.plugin && errors.plugin.message?.toString()}</FormErrorMessage>
+      </FormControl>
+      <br />
       <FormControl isInvalid={!!errors.owner}>
         <FormLabel htmlFor="owner">Owner</FormLabel>
         <Input
@@ -40,6 +58,24 @@ const AddAccountForm = ({ onAdd, onCancel }: AddAccountFormProps) => {
         />
         <FormErrorMessage>{errors.owner && errors.owner.message?.toString()}</FormErrorMessage>
       </FormControl>
+      {watch('plugin') === 'n26' ? (
+        <>
+          <br />
+          <FormControl isInvalid={!!errors.number}>
+            <FormLabel htmlFor="number">IBAN</FormLabel>
+            <Input
+              id="number"
+              placeholder="DE1234..."
+              {...register('number', {
+                required: 'This is required',
+              })}
+            />
+            <FormErrorMessage>
+              {errors.number && errors.number.message?.toString()}
+            </FormErrorMessage>
+          </FormControl>
+        </>
+      ) : null}
       <br />
       <FormControl isInvalid={!!errors.file}>
         <FormLabel htmlFor="file">File</FormLabel>

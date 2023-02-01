@@ -1,17 +1,10 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { normalizeCSVValue, normalizeCurrencyNumber } from './common';
 import type { AccountType } from '../models/Account';
 import type { TransactionType } from '../models/Transaction';
 
 dayjs.extend(customParseFormat);
-
-function normalizeCSVValue(value: string): string {
-  return value.replace(/"/gim, '').replace(/\s{2,}/, ' ');
-}
-
-function normalizeCurrencyNumber(value: string): number {
-  return parseFloat(value.replace(/\./, '').replace(',', '.'));
-}
 
 export function parseCSV(text: string): {
   account: Omit<AccountType, 'owner'>;
