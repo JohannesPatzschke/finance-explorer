@@ -10,7 +10,7 @@ import {
   StatHelpText,
   StatArrow,
 } from '@chakra-ui/react';
-import { PieChart, Pie, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Legend, ResponsiveContainer } from 'recharts';
 import TransactionFilter from '@components/forms/TransactionFilter';
 import useFilteredTransactions from '@hooks/useFilteredTransactions';
 import useCategories from '@hooks/useCategories';
@@ -81,18 +81,12 @@ const Explore = () => {
         <Stat>
           <StatLabel>Income</StatLabel>
           <StatNumber>{toCurrency(income)} €</StatNumber>
-          <StatHelpText>
-            <StatArrow type={incomePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
-            {toCurrency(incomePerMonth)} €
-          </StatHelpText>
+          <StatHelpText>ø per month {toCurrency(incomePerMonth)} €</StatHelpText>
         </Stat>
         <Stat>
           <StatLabel>Outcome</StatLabel>
           <StatNumber>{toCurrency(outcome)} €</StatNumber>
-          <StatHelpText>
-            <StatArrow type={outcomePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
-            {toCurrency(outcomePerMonth)} €
-          </StatHelpText>
+          <StatHelpText>ø per month {toCurrency(outcomePerMonth)} €</StatHelpText>
         </Stat>
         <Stat>
           <StatLabel>Bilance</StatLabel>
@@ -106,20 +100,26 @@ const Explore = () => {
         </Stat>
       </HStack>
       <br />
-      <PieChart width={400} height={400}>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={pieData}
-          cx="50%"
-          cy="50%"
-          outerRadius={80}
-          fill="#8884d8"
-          label
-        />
-        <Tooltip />
-        <Legend verticalAlign="top" height={36} />
-      </PieChart>
+      <br />
+      <ResponsiveContainer height={500}>
+        <PieChart height={100}>
+          <Pie
+            dataKey="value"
+            isAnimationActive={false}
+            data={pieData}
+            cx="40%"
+            cy="25%"
+            outerRadius={100}
+            fill="#8884d8"
+            label={({ value, x, y, fill, textAnchor }) => (
+              <text x={x} y={y} fill={fill} textAnchor={textAnchor}>
+                {toCurrency(value)} €
+              </text>
+            )}
+          />
+          <Legend verticalAlign="top" height={36} layout="vertical" align="right" />
+        </PieChart>
+      </ResponsiveContainer>
     </>
   );
 };
