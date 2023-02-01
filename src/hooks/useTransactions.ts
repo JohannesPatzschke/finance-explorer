@@ -20,10 +20,7 @@ type TransactionsStore = {
 };
 
 function processCategory(transaction: TransactionType, category: CategoryType) {
-  if (
-    transaction.categoryId ||
-    (transaction.suggestion && transaction.suggestion.categoryId !== category.id)
-  ) {
+  if (transaction.categoryId) {
     return transaction;
   }
 
@@ -33,11 +30,11 @@ function processCategory(transaction: TransactionType, category: CategoryType) {
 
   for (const group of category.groups) {
     for (const expression of group.expressions) {
-      const { value, isRegExp } = expression;
+      const { value, isRegExp, flags = '' } = expression;
 
       if (
         (!isRegExp && searchString.includes(value)) ||
-        (isRegExp && new RegExp(value).test(searchString))
+        (isRegExp && new RegExp(value, flags).test(searchString))
       ) {
         transaction.suggestion = {
           categoryId: category.id,

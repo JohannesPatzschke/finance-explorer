@@ -4,6 +4,7 @@ export const ExpressionObject = z.object({
   id: z.string(),
   value: z.string(),
   isRegExp: z.boolean(),
+  flags: z.string().optional(),
 });
 
 export type ExpressionType = z.infer<typeof ExpressionObject>;
