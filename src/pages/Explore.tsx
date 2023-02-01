@@ -1,11 +1,21 @@
 import React, { useMemo } from 'react';
+import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
-import { Heading, Stat, StatLabel, StatNumber, HStack } from '@chakra-ui/react';
-import { PieChart, Pie, Legend, Tooltip, Label } from 'recharts';
+import {
+  Heading,
+  Stat,
+  StatLabel,
+  StatNumber,
+  HStack,
+  StatHelpText,
+  StatArrow,
+} from '@chakra-ui/react';
+import { PieChart, Pie, Legend, Tooltip } from 'recharts';
 import TransactionFilter from '@components/forms/TransactionFilter';
 import useFilteredTransactions from '@hooks/useFilteredTransactions';
 import useCategories from '@hooks/useCategories';
 import { TransactionType } from '@models/Transaction';
+import { toCurrency } from '@utils/currency';
 
 const COLOR_PALETTE = [
   '#FC8181',
@@ -18,6 +28,8 @@ const COLOR_PALETTE = [
   '#B794F4',
   '#F687B3',
 ];
+
+const DAYS_PER_MONTH = 30.4375;
 
 function calculatePieData(transactions: Array<TransactionType>) {
   const categoryGroups = groupBy(transactions, ({ categoryId }) => categoryId ?? 'Uncategorized');
@@ -40,17 +52,24 @@ const Explore = () => {
 
   const pieData = calculatePieData(transactions);
 
+  const diffDays = dayjs
+    .unix(transactions[0].timestamp)
+    .diff(dayjs.unix(transactions[transactions.length - 1].timestamp), 'days');
+
   const income = useMemo(
     () => transactions.reduce((sum, { amount }) => (amount >= 0 ? sum + amount : sum), 0),
     [transactions],
   );
+  const incomePerMonth = (income / diffDays) * DAYS_PER_MONTH;
 
   const outcome = useMemo(
     () => transactions.reduce((sum, { amount }) => (amount < 0 ? sum + amount : sum), 0),
     [transactions],
   );
+  const outcomePerMonth = (outcome / diffDays) * DAYS_PER_MONTH;
 
   const bilance = income + outcome;
+  const bilancePerMonth = (bilance / diffDays) * DAYS_PER_MONTH;
 
   return (
     <>
@@ -61,17 +80,29 @@ const Explore = () => {
       <HStack>
         <Stat>
           <StatLabel>Income</StatLabel>
-          <StatNumber>{income.toFixed(2)} €</StatNumber>
+          <StatNumber>{toCurrency(income)} €</StatNumber>
+          <StatHelpText>
+            <StatArrow type={incomePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
+            {toCurrency(incomePerMonth)} €
+          </StatHelpText>
         </Stat>
         <Stat>
           <StatLabel>Outcome</StatLabel>
-          <StatNumber>{outcome.toFixed(2)} €</StatNumber>
+          <StatNumber>{toCurrency(outcome)} €</StatNumber>
+          <StatHelpText>
+            <StatArrow type={outcomePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
+            {toCurrency(outcomePerMonth)} €
+          </StatHelpText>
         </Stat>
         <Stat>
           <StatLabel>Bilance</StatLabel>
           <StatNumber color={bilance >= 0 ? 'green.300' : 'red.300'}>
-            {bilance.toFixed(2)} €
+            {toCurrency(bilance)} €
           </StatNumber>
+          <StatHelpText>
+            <StatArrow type={bilancePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
+            {toCurrency(bilancePerMonth)} €
+          </StatHelpText>
         </Stat>
       </HStack>
       <br />
