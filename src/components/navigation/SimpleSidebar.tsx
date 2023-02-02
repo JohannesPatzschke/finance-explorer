@@ -33,7 +33,7 @@ interface LinkItemProps {
   to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, to: '/home' },
+  { name: 'Home', icon: FiHome, to: '/' },
   { name: 'Bank Accounts', icon: FiCreditCard, to: '/accounts' },
   { name: 'Categories', icon: FiServer, to: '/categories' },
   { name: 'Transactions', icon: FiDollarSign, to: '/transactions' },

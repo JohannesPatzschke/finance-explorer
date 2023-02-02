@@ -32,16 +32,16 @@ const router = createBrowserRouter([
         element: <Explore />,
       },
       {
-        path: 'home',
-        element: <Home />,
-      },
-      {
         path: 'settings',
         element: <Settings />,
       },
       {
         path: 'transactions',
         element: <Transactions />,
+      },
+      {
+        index: true,
+        element: <Home />,
       },
     ],
   },
