@@ -53,7 +53,6 @@ const GroupSection = ({ group, index, form, onRemove, removeDisabled }: GroupSec
   const { fields, append, remove } = useFieldArray({
     control,
     name: `groups.${index}.expressions`,
-    rules: { minLength: 1 },
   });
 
   const appendExpression = useCallback(() => {
@@ -163,7 +162,7 @@ const GroupSection = ({ group, index, form, onRemove, removeDisabled }: GroupSec
             </Checkbox>
           </HStack>
 
-          <CloseButton onClick={() => remove(expressionIndex)} isDisabled={fields.length <= 1} />
+          <CloseButton onClick={() => remove(expressionIndex)} />
         </HStack>
       ))}
       <Button size="xs" colorScheme="teal" variant="ghost" ml={8} onClick={appendExpression}>

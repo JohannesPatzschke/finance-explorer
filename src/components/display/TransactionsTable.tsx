@@ -48,7 +48,7 @@ const TransactionRow = ({
 
   const { categoryId, groupId } = suggestion ?? transaction;
 
-  const { category = '-', group = '' } =
+  const { category = null, group = null } =
     categoryId && groupId ? getGroupName(categoryId, groupId) : {};
 
   return (
@@ -65,11 +65,15 @@ const TransactionRow = ({
           <div>
             {isPopoverTarget ? (
               <PopoverTrigger>
-                <Tag>{category ?? '-'}</Tag>
+                <Tag>{category ?? <i>choose</i>}</Tag>
               </PopoverTrigger>
             ) : (
-              <Tag colorScheme="teal" cursor="pointer" onClick={onCategoryClick}>
-                {category ?? '-'}
+              <Tag
+                colorScheme={category ? 'teal' : 'red'}
+                cursor="pointer"
+                onClick={onCategoryClick}
+              >
+                {category ?? <i>choose</i>}
               </Tag>
             )}
             <br />
