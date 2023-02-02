@@ -11,13 +11,18 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   Button,
+  Collapse,
+  IconButton,
+  useDisclosure,
   VStack,
+  Flex,
 } from '@chakra-ui/react';
 import produce from 'immer';
 import useCategories from '@hooks/useCategories';
 import useFilters from '@hooks/useFilters';
 import { CategoryType } from '@models/Category';
 import { shallow } from 'zustand/shallow';
+import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 
 type CategoryCheckboxGroupProps = {
   category: CategoryType;
@@ -30,6 +35,7 @@ const CategoryCheckboxGroup = ({
   defaultChecked = true,
   onChange,
 }: CategoryCheckboxGroupProps) => {
+  const { isOpen, onToggle } = useDisclosure();
   const { name, groups = [] } = category;
 
   const [checkedItems, setCheckedItems] = React.useState(
@@ -58,31 +64,43 @@ const CategoryCheckboxGroup = ({
   };
 
   return (
-    <Stack>
-      <Checkbox
-        isChecked={allChecked}
-        isIndeterminate={isIndeterminate}
-        onChange={(e) => handleChange(groups.map(() => e.target.checked))}
-      >
-        {name}
-      </Checkbox>
-      <Stack pl={6} mt={1} spacing={1}>
-        {groups.map((group, groupIndex) => (
-          <Checkbox
-            key={group.id}
-            isChecked={checkedItems[groupIndex]}
-            onChange={(e) =>
-              handleChange(
-                produce(checkedItems, (draft) => {
-                  draft[groupIndex] = e.target.checked;
-                }),
-              )
-            }
-          >
-            {group.name}
-          </Checkbox>
-        ))}
-      </Stack>
+    <Stack w="100%">
+      <Flex justify="space-between" w="100%">
+        <Checkbox
+          isChecked={allChecked}
+          isIndeterminate={isIndeterminate}
+          onChange={(e) => handleChange(groups.map(() => e.target.checked))}
+        >
+          {name}
+        </Checkbox>
+        <IconButton
+          size="sm"
+          aria-label="Search database"
+          variant="ghost"
+          p={0}
+          icon={isOpen ? <FiChevronDown /> : <FiChevronUp />}
+          onClick={onToggle}
+        />
+      </Flex>
+      <Collapse in={isOpen} style={{ margin: 0 }} animateOpacity>
+        <Stack pl={6} mt={1} spacing={1}>
+          {groups.map((group, groupIndex) => (
+            <Checkbox
+              key={group.id}
+              isChecked={checkedItems[groupIndex]}
+              onChange={(e) =>
+                handleChange(
+                  produce(checkedItems, (draft) => {
+                    draft[groupIndex] = e.target.checked;
+                  }),
+                )
+              }
+            >
+              {group.name}
+            </Checkbox>
+          ))}
+        </Stack>
+      </Collapse>
     </Stack>
   );
 };
