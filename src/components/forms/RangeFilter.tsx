@@ -1,6 +1,5 @@
-import React, { useState, forwardRef } from 'react';
-import dayjs from 'dayjs';
-import { Card, CardBody, HStack, Button } from '@chakra-ui/react';
+import React, { forwardRef } from 'react';
+import { Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -21,8 +20,8 @@ const RangeFilter = () => {
     ),
   );
 
-  const startDate = typeof start === 'number' ? dayjs(start).toDate() : start;
-  const endDate = typeof end === 'number' ? dayjs(end).toDate() : end;
+  const startDate = typeof start === 'number' ? new Date(start) : start;
+  const endDate = typeof end === 'number' ? new Date(end) : end;
 
   return (
     <>

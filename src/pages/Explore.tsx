@@ -76,8 +76,6 @@ const Explore = () => {
     categories,
   );
 
-  console.log(transactions);
-
   const diffDays = dayjs
     .unix(transactions[0]?.timestamp)
     .diff(dayjs.unix(transactions[transactions.length - 1]?.timestamp), 'days');

@@ -33,8 +33,6 @@ const useFilteredTransactions = () => {
     shallow,
   );
 
-  console.log('start', start);
-
   let startIndex = null;
   let endIndex = null;
 

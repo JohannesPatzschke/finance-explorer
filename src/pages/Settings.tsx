@@ -80,8 +80,8 @@ const Settings = () => {
     (state) => [state.transactions, state.setTransactions, state.resetTransactions],
     shallow,
   );
-  const [categoryMap, setFilters] = useFilters(
-    (state) => [state.categoryMap, state.setFilters],
+  const [start, end, categoryMap, setFilters, resetFilters] = useFilters(
+    (state) => [state.start, state.end, state.categoryMap, state.setFilters, state.resetFilters],
     shallow,
   );
 
@@ -150,7 +150,7 @@ const Settings = () => {
                     accounts,
                     categories,
                     transactions,
-                    filters: { categoryMap },
+                    filters: { start, end, categoryMap },
                   })
                 }
               >
@@ -212,6 +212,22 @@ const Settings = () => {
             description: 'Reset categories to the default ones',
           },
           {
+            key: 'clearFilter',
+            action: (
+              <Button
+                leftIcon={<FiTrash />}
+                colorScheme="red"
+                variant="outline"
+                size="sm"
+                onClick={() => resetFilters()}
+              >
+                Filters
+              </Button>
+            ),
+            title: 'Delete filter',
+            description: 'Reset filters to the default ones',
+          },
+          {
             key: 'clearAll',
             action: (
               <Button
@@ -223,6 +239,7 @@ const Settings = () => {
                   resetAccounts();
                   resetCategories();
                   resetTransactions();
+                  resetFilters();
                 }}
               >
                 Everything
