@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1674858579236",
+    "name": "Lebensmittel",
+    "groups": [
+      {
+        "id": "1674946512779",
+        "name": "Supermarkt",
+        "expressions": [
+          {
+            "id": "1674946513725",
+            "value": "REWE",
+            "isRegExp": false
+          },
+          {
+            "id": "1674946530968",
+            "value": "EDEKA",
+            "isRegExp": false
+          }
+        ]
+      },
+      {
+        "id": "1674946538472",
+        "name": "Hello Fresh",
+        "expressions": [
+          {
+            "id": "1674946538923",
+            "value": "HelloFresh",
+            "isRegExp": false
+          }
+        ]
+      }
+    ]
+  }
+]
