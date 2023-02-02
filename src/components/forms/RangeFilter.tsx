@@ -1,4 +1,5 @@
 import React, { useState, forwardRef } from 'react';
+import dayjs from 'dayjs';
 import { Card, CardBody, HStack, Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 
@@ -20,18 +21,21 @@ const RangeFilter = () => {
     ),
   );
 
+  const startDate = typeof start === 'number' ? dayjs(start).toDate() : start;
+  const endDate = typeof end === 'number' ? dayjs(end).toDate() : end;
+
   return (
     <>
       <DatePicker
         dateFormat="dd.MM.yyyy"
-        selected={start}
+        selected={startDate}
         placeholderText="Start Date"
         customInput={<DateButton />}
         onChange={setStart}
       />
       <DatePicker
         dateFormat="dd.MM.yyyy"
-        selected={end}
+        selected={endDate}
         placeholderText="End Date"
         customInput={<DateButton />}
         onChange={setEnd}

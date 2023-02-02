@@ -7,11 +7,10 @@ interface EncryptedStorage {
 }
 
 const useEncryptedStorage = create<EncryptedStorage>((set) => ({
-  storage: localStorage,
-  // storage: import.meta.env.VITE_STORAGE_SECRET
-  //   ? new EncryptedLocalStorage(import.meta.env.VITE_STORAGE_SECRET)
-  //   : null,
-  unlockStorage: (secret) => set(() => ({ storage: localStorage })),
+  storage: import.meta.env.VITE_STORAGE_SECRET
+    ? new EncryptedLocalStorage(import.meta.env.VITE_STORAGE_SECRET)
+    : null,
+  unlockStorage: (secret) => set(() => ({ storage: new EncryptedLocalStorage(secret) })),
 }));
 
 export default useEncryptedStorage;
