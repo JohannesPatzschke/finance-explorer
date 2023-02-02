@@ -1,14 +1,17 @@
 import React from 'react';
-import { Card, CardBody, HStack } from '@chakra-ui/react';
+import { Card, CardBody, Stack } from '@chakra-ui/react';
 import CategoryFilterSelect from '@components/forms/CategoryFilterSelect';
+import RangeFilter from '@components/forms/RangeFilter';
 
 const TransactionFilter = () => {
   return (
     <Card variant="outline">
       <CardBody>
-        <HStack>
+        <Stack spacing={8} direction="row">
+          <RangeFilter />
+
           <CategoryFilterSelect />
-        </HStack>
+        </Stack>
       </CardBody>
     </Card>
   );

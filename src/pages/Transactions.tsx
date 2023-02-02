@@ -17,6 +17,7 @@ import TransactionsTable from '../components/display/TransactionsTable';
 
 import useTransactionsStore from '../hooks/useTransactions';
 import { TransactionType } from '../models/Transaction';
+import useFilteredTransactions from '@hooks/useFilteredTransactions';
 
 function groupTransactions(transactions: Array<TransactionType>) {
   const categorized: Array<TransactionType> = [];

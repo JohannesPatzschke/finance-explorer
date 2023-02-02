@@ -76,9 +76,11 @@ const Explore = () => {
     categories,
   );
 
+  console.log(transactions);
+
   const diffDays = dayjs
-    .unix(transactions[0].timestamp)
-    .diff(dayjs.unix(transactions[transactions.length - 1].timestamp), 'days');
+    .unix(transactions[0]?.timestamp)
+    .diff(dayjs.unix(transactions[transactions.length - 1]?.timestamp), 'days');
 
   const income = useMemo(
     () => transactions.reduce((sum, { amount }) => (amount >= 0 ? sum + amount : sum), 0),

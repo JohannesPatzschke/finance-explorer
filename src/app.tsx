@@ -2,6 +2,7 @@ import React from 'react';
 import { ChakraProvider, Spinner, extendTheme } from '@chakra-ui/react';
 import useEncryptedStorage from './hooks/useEncryptedStorage';
 import Unlock from './pages/Unlock';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 const Router = React.lazy(() => import('./router'));
 
