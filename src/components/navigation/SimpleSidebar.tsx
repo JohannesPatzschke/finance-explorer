@@ -107,7 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           key={link.name}
           icon={link.icon}
           to={link.to}
-          active={location.pathname.startsWith(link.to)}
+          active={location.pathname === link.to}
         >
           {link.name}
         </NavItem>
