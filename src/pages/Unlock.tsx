@@ -3,20 +3,24 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Text } from 
 import UnlockForm from '../components/forms/UnlockForm';
 
 const Unlock = () => {
+  const newUser = !localStorage.getItem('version');
+
   return (
     <Modal isOpen={true} onClose={() => null}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Unlock Page</ModalHeader>
+        <ModalHeader textAlign="center">Unlock Page</ModalHeader>
         <ModalBody>
-          <Text>
-            <b>New users:</b> Your bank data will be encrypted and saved in the local storage. Enter
-            a secure secret and save it someplace safe.
-          </Text>
-          <br />
-          <Text>
-            <b>Returning users:</b> Enter you secret to unlock the page.
-          </Text>
+          {newUser ? (
+            <Text>
+              Your bank data will be <b>encrypted</b> and <b>saved</b> in your <b>local storage</b>.
+              <br />
+              <br />
+              Enter a secure secret and save it someplace safe.
+            </Text>
+          ) : (
+            <Text>Enter your secret to unlock the page.</Text>
+          )}
           <br />
           <UnlockForm />
         </ModalBody>

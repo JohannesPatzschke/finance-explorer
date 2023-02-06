@@ -14,6 +14,8 @@ import {
   BoxProps,
   FlexProps,
   Highlight,
+  Divider,
+  Center,
 } from '@chakra-ui/react';
 import {
   FiHome,
@@ -23,9 +25,11 @@ import {
   FiDollarSign,
   FiSettings,
   FiMenu,
+  FiGithub,
 } from 'react-icons/fi';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { IconType } from 'react-icons';
+import useVersion from '@hooks/useVersion';
 
 interface LinkItemProps {
   name: string;
@@ -75,9 +79,10 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const location = useLocation();
+  const { version } = useVersion();
 
   return (
-    <Box
+    <Flex
       bg={useColorModeValue('white', 'gray.900')}
       borderRight="1px"
       borderRightColor={useColorModeValue('gray.200', 'gray.700')}
@@ -107,7 +112,21 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {link.name}
         </NavItem>
       ))}
-    </Box>
+
+      <Center height="25px" position="absolute" bottom={5} left={0} right={0}>
+        <Text fontSize="xs" mr={3}>
+          v{version}
+        </Text>
+        <Divider orientation="vertical" />
+        <IconButton
+          aria-label="GitHub Repository"
+          variant="link"
+          as="a"
+          href="https://github.com/JohannesPatzschke/finance-explorer"
+          icon={<FiGithub />}
+        />
+      </Center>
+    </Flex>
   );
 };
 
