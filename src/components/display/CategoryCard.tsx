@@ -253,48 +253,55 @@ const CategoryCard = ({ category, onRemove, onSave }: CategoryCardProps) => {
                   </AccordionButton>
                 </CardHeader>
 
-                <AccordionPanel>
-                  <CardBody>
-                    <List spacing={5}>
-                      {fields?.map((group, groupIndex) => (
-                        <GroupSection
-                          key={group.id}
-                          group={group}
-                          index={groupIndex}
-                          form={form}
-                          removeDisabled={fields.length <= 1}
-                          onRemove={removeGroup}
-                        />
-                      ))}
-                    </List>
-                    <br />
-                    <Button
-                      size="xs"
-                      colorScheme="teal"
-                      variant="ghost"
-                      ml={8}
-                      onClick={appendGroup}
-                    >
-                      Add Group
-                    </Button>
-                  </CardBody>
-                  <CardFooter justify="end">
-                    <ButtonGroup spacing={5}>
-                      <Button size="sm" colorScheme="red" variant="outline" onClick={handleRemove}>
-                        Delete
-                      </Button>
+                {isExpanded && (
+                  <AccordionPanel>
+                    <CardBody>
+                      <List spacing={5}>
+                        {fields?.map((group, groupIndex) => (
+                          <GroupSection
+                            key={group.id}
+                            group={group}
+                            index={groupIndex}
+                            form={form}
+                            removeDisabled={fields.length <= 1}
+                            onRemove={removeGroup}
+                          />
+                        ))}
+                      </List>
+                      <br />
                       <Button
-                        size="sm"
+                        size="xs"
                         colorScheme="teal"
-                        variant="solid"
-                        type="submit"
-                        isDisabled={!isDirty}
+                        variant="ghost"
+                        ml={8}
+                        onClick={appendGroup}
                       >
-                        Save
+                        Add Group
                       </Button>
-                    </ButtonGroup>
-                  </CardFooter>
-                </AccordionPanel>
+                    </CardBody>
+                    <CardFooter justify="end">
+                      <ButtonGroup spacing={5}>
+                        <Button
+                          size="sm"
+                          colorScheme="red"
+                          variant="outline"
+                          onClick={handleRemove}
+                        >
+                          Delete
+                        </Button>
+                        <Button
+                          size="sm"
+                          colorScheme="teal"
+                          variant="solid"
+                          type="submit"
+                          isDisabled={!isDirty}
+                        >
+                          Save
+                        </Button>
+                      </ButtonGroup>
+                    </CardFooter>
+                  </AccordionPanel>
+                )}
               </>
             )}
           </AccordionItem>
