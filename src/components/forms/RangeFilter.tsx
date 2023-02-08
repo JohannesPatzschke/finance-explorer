@@ -1,8 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
-
-import 'react-datepicker/dist/react-datepicker.css';
 import useFilters from '@hooks/useFilters';
 import { shallow } from 'zustand/shallow';
 

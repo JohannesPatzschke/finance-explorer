@@ -124,7 +124,11 @@ const CategoryFilterSelect = ({}: CategoryFilterSelectProps) => {
   return (
     <Popover placement="right">
       <PopoverTrigger>
-        <Button colorScheme="teal" variant={isCategoryFilterActive ? 'solid' : 'outline'}>
+        <Button
+          colorScheme="teal"
+          variant={isCategoryFilterActive ? 'solid' : 'outline'}
+          minWidth={110}
+        >
           Categories
         </Button>
       </PopoverTrigger>

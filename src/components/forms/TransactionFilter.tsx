@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, Stack } from '@chakra-ui/react';
+import { Card, CardBody, Stack, Divider } from '@chakra-ui/react';
 import CategoryFilterSelect from '@components/forms/CategoryFilterSelect';
 import RangeFilter from '@components/forms/RangeFilter';
 
@@ -9,7 +9,6 @@ const TransactionFilter = () => {
       <CardBody>
         <Stack spacing={8} direction="row">
           <RangeFilter />
-
           <CategoryFilterSelect />
         </Stack>
       </CardBody>
