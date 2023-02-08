@@ -27,7 +27,9 @@ const COLOR_PALETTE = [
   '#63B3ED',
   '#76E4F7',
   '#B794F4',
-  '#F687B3',
+  '#6A2C70',
+  '#B4846C',
+  '#FF2E63',
 ];
 
 const DAYS_PER_MONTH = 30.4375;
@@ -57,7 +59,7 @@ const Explore = () => {
   const transactions = useFilteredTransactions();
   const categories = useCategories((state) => state.categories).map((category, index) => ({
     ...category,
-    fill: COLOR_PALETTE[index],
+    fill: COLOR_PALETTE[index % COLOR_PALETTE.length],
   }));
 
   const legendPayload = categories.map(({ id, name, fill }) => ({
