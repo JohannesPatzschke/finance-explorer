@@ -1,6 +1,6 @@
-export function toCurrency(value: number): string {
-  return value.toLocaleString('DE-de', {
+export function toCurrency(value: number, currency = '€'): string {
+  return `${value.toLocaleString('DE-de', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  });
+  })} ${currency}`;
 }
