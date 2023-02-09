@@ -31,12 +31,12 @@ const Stats = () => {
   return (
     <HStack>
       <Stat>
-        <StatLabel>Income</StatLabel>
+        <StatLabel>Inflow</StatLabel>
         <StatNumber>{toCurrency(income)} €</StatNumber>
         <StatHelpText>ø per month {toCurrency(incomePerMonth)} €</StatHelpText>
       </Stat>
       <Stat>
-        <StatLabel>Outcome</StatLabel>
+        <StatLabel>Outflow</StatLabel>
         <StatNumber>{toCurrency(outcome)} €</StatNumber>
         <StatHelpText>ø per month {toCurrency(outcomePerMonth)} €</StatHelpText>
       </Stat>
