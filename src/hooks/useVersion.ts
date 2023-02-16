@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 const useVersion = () => {
-  const version = window.__APP_VERSION__;
+  const version = __APP_VERSION__;
 
   useEffect(() => {
     if (localStorage.getItem('version') !== version) {
