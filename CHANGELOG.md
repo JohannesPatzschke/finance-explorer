@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/JohannesPatzschke/finance-explorer/compare/v1.0.0...v1.1.0) (2023-02-16)
+
+
+### Bug Fixes
+
+* color palette ([3d3691d](https://github.com/JohannesPatzschke/finance-explorer/commit/3d3691d917f625d49a6033222dbee7a4a6c7f94b))
+* date button width ([633b8f6](https://github.com/JohannesPatzschke/finance-explorer/commit/633b8f6c0bcdcd7695b156a19722c5e154e27e70))
+* github link and version display ([c3d92ef](https://github.com/JohannesPatzschke/finance-explorer/commit/c3d92ef2885da7903cf29acf1519a9ddfd5968e8))
+* version display ([1aa9e0a](https://github.com/JohannesPatzschke/finance-explorer/commit/1aa9e0a8832d1e076d5b627b284d0e6fb4ea9ddf))
+
+
+### Features
+
+* stacked bar chart per monthly outgoing ([b510121](https://github.com/JohannesPatzschke/finance-explorer/commit/b510121a60673eef56fd89d3e0f50eccf1c94cee))
+
 # 1.0.0 (2023-02-03)
 
 
