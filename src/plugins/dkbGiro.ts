@@ -52,7 +52,7 @@ export function parseCSV(text: string): {
       throw new Error('Invalid date');
     }
 
-    let transactionId = [bookingDay, amount].join('_');
+    let transactionId = [numberHit, bookingDay, amount].join('_');
 
     if (transactionIndexMap[transactionId]) {
       transactionIndexMap[transactionId] += 1;
