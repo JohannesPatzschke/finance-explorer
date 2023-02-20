@@ -83,16 +83,34 @@ const useTransactions = create<TransactionsStore>()(
       addTransactions: (transactions) => {
         TransactionObjects.parse(transactions);
 
-        const categorizedTransactions: Array<TransactionType> =
-          transactions.map(categorizeTransaction);
+        const accountId = transactions[0]?.accountIds?.[0];
+        const accountNumber = transactions[0]?.accountNumber;
+        const transactionMap: Record<string, TransactionType> = transactions.reduce(
+          (map, transaction) => ({ ...map, [transaction.id]: transaction }),
+          {},
+        );
 
-        return set((state) => ({
-          transactions: orderBy(
-            state.transactions.concat(categorizedTransactions),
-            'timestamp',
-            'desc',
-          ),
-        }));
+        return set((state) => {
+          const currentTransaction = state.transactions.map((transaction) => {
+            if (transaction.accountNumber === accountNumber && transactionMap[transaction.id]) {
+              transaction.accountIds.push(accountId);
+              delete transactionMap[transaction.id];
+            }
+
+            return transaction;
+          });
+
+          const categorizedTransactions: Array<TransactionType> =
+            Object.values(transactionMap).map(categorizeTransaction);
+
+          return {
+            transactions: orderBy(
+              currentTransaction.concat(categorizedTransactions),
+              'timestamp',
+              'desc',
+            ),
+          };
+        });
       },
       setCategory: (transactionId, categoryId, groupId) => {
         return set(
