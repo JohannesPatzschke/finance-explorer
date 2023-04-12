@@ -19,9 +19,8 @@ import {
 } from '@chakra-ui/react';
 import produce from 'immer';
 import useCategories from '@hooks/useCategories';
-import useFilters from '@hooks/useFilters';
 import { CategoryType } from '@models/Category';
-import { shallow } from 'zustand/shallow';
+import { CategoryFilterMapType } from '@models/Filters';
 import { FiChevronUp, FiChevronDown } from 'react-icons/fi';
 
 type CategoryCheckboxGroupProps = {
@@ -106,18 +105,15 @@ const CategoryCheckboxGroup = ({
 };
 
 type CategoryFilterSelectProps = {
-  placeholder?: string;
+  categoryMap: CategoryFilterMapType;
+  onChange?(categoryId: string, values: boolean | Array<string>): void;
 };
 
-const CategoryFilterSelect = ({}: CategoryFilterSelectProps) => {
-  const [categoryMap, setCategory] = useFilters(
-    (state) => [state.categoryMap, state.setCategory],
-    shallow,
-  );
+const CategoryFilterSelect = ({ categoryMap, onChange }: CategoryFilterSelectProps) => {
   const categories = useCategories((state) => state.categories);
 
   const onFilterChange = (categoryId: string, values: boolean | Array<string>) => {
-    setCategory(categoryId, values);
+    onChange?.(categoryId, values);
   };
   const isCategoryFilterActive = Object.values(categoryMap).some((value) => value !== true);
 

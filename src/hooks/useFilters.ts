@@ -10,8 +10,7 @@ type FiltersStore = {
   categoryMap: CategoryFilterMapType;
   setFilters: (filters: Pick<FiltersStore, 'categoryMap'>) => void;
   resetFilters: () => void;
-  setStart: (date: Date | null) => void;
-  setEnd: (date: Date | null) => void;
+  setRange: (range: { start?: Date | null; end?: Date | null }) => void;
   setCategory(categoryId: string, values: boolean | Array<string>): void;
 };
 
@@ -23,8 +22,11 @@ const useFilters = create<FiltersStore>()(
       categoryMap: {},
       setFilters: (filters) => set(() => filters),
       resetFilters: () => set(() => ({ start: null, end: null, categoryMap: {} })),
-      setStart: (start) => set(() => ({ start: start instanceof Date ? start.getTime() : start })),
-      setEnd: (end) => set(() => ({ end: end instanceof Date ? end.getTime() : end })),
+      setRange: ({ start, end }) =>
+        set(() => ({
+          start: start instanceof Date ? start.getTime() : start,
+          end: end instanceof Date ? end.getTime() : end,
+        })),
       setCategory: (categoryId, values) =>
         set(
           produce<FiltersStore>((state) => {

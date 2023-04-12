@@ -14,7 +14,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import TransactionsTable from '../components/display/TransactionsTable';
-
+import TransactionFilter from '@components/forms/TransactionFilter';
 import useTransactionsStore from '../hooks/useTransactions';
 import { TransactionType } from '../models/Transaction';
 import useFilteredTransactions from '@hooks/useFilteredTransactions';
@@ -49,6 +49,8 @@ const Transactions = () => {
   return (
     <>
       <Heading size="lg">Transactions</Heading>
+      <br />
+      <TransactionFilter />
       <br />
       <Tabs isFitted variant="enclosed">
         <TabList mb="1em">

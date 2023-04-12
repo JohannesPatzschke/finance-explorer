@@ -1,13 +1,49 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState, useCallback } from 'react';
 import { Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
-import useFilters from '@hooks/useFilters';
-import { shallow } from 'zustand/shallow';
 
-const RangeFilter = () => {
-  const [start, end, setStart, setEnd] = useFilters(
-    (state) => [state.start, state.end, state.setStart, state.setEnd],
-    shallow,
+export type RangeFilterOutput = {
+  start: Date | null;
+  end: Date | null;
+};
+
+export type RangeFilterInput = {
+  start?: Date | number | null;
+  end?: Date | number | null;
+};
+
+type RangeFilterProps = {
+  defaultFilter?: RangeFilterInput;
+  onChange?: (filter: RangeFilterOutput) => void;
+};
+
+function normalizeInput(input: RangeFilterInput): RangeFilterOutput {
+  return {
+    start: typeof input.start === 'number' ? new Date(input.start) : input.start ?? null,
+    end: typeof input.end === 'number' ? new Date(input.end) : input.end ?? null,
+  };
+}
+
+const RangeFilter = ({
+  defaultFilter = { start: null, end: null },
+  onChange,
+}: RangeFilterProps) => {
+  const [{ start, end }, setFilter] = useState<RangeFilterOutput>(normalizeInput(defaultFilter));
+
+  const setStart = useCallback(
+    (date: Date | null) => {
+      setFilter((filter) => ({ ...filter, start: date }));
+      onChange?.({ start: date, end });
+    },
+    [onChange, end],
+  );
+
+  const setEnd = useCallback(
+    (date: Date | null) => {
+      setFilter((filter) => ({ ...filter, end: date }));
+      onChange?.({ start, end: date });
+    },
+    [onChange, start],
   );
 
   const DateButton = forwardRef<HTMLButtonElement>(
@@ -18,21 +54,18 @@ const RangeFilter = () => {
     ),
   );
 
-  const startDate = typeof start === 'number' ? new Date(start) : start;
-  const endDate = typeof end === 'number' ? new Date(end) : end;
-
   return (
     <>
       <DatePicker
         dateFormat="dd.MM.yyyy"
-        selected={startDate}
+        selected={start}
         placeholderText="Start Date"
         customInput={<DateButton />}
         onChange={setStart}
       />
       <DatePicker
         dateFormat="dd.MM.yyyy"
-        selected={endDate}
+        selected={end}
         placeholderText="End Date"
         customInput={<DateButton />}
         onChange={setEnd}
