@@ -21,6 +21,7 @@ export const CategoryObject = z.object({
   id: z.string(),
   name: z.string(),
   groups: z.array(GroupObject),
+  fill: z.string().optional(),
 });
 
 export const CategoryObjects = z.array(CategoryObject);
