@@ -4,6 +4,7 @@ import Color from 'color';
 import { sortBy } from 'lodash';
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer } from 'recharts';
 import useFilteredTransactions from '@hooks/useFilteredTransactions';
+import useBackgroundColor from '@hooks/useBackgroundColor';
 import { TransactionType } from '@models/Transaction';
 import { toCurrency } from '@utils/currency';
 import { GroupType, CategoryType } from '@models/Category';
@@ -46,6 +47,7 @@ function calculateData(transactions: Array<TransactionType>, groups: Array<Group
 }
 
 const StackedMonthsGroups = ({ category }: StackedMonthsGroupsProps) => {
+  const bgColor = useBackgroundColor();
   const transactions = useFilteredTransactions();
   const { groups = [], fill } = category;
 
@@ -67,7 +69,10 @@ const StackedMonthsGroups = ({ category }: StackedMonthsGroupsProps) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip formatter={(value) => (typeof value === 'number' ? toCurrency(value) : value)} />
+        <Tooltip
+          formatter={(value) => (typeof value === 'number' ? toCurrency(value) : value)}
+          contentStyle={{ backgroundColor: bgColor }}
+        />
         {groups.map(({ id, name }, index) => (
           <Bar
             key={id}

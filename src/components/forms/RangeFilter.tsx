@@ -3,8 +3,8 @@ import { Button } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 
 export type RangeFilterOutput = {
-  start: Date | null;
-  end: Date | null;
+  start: number | null;
+  end: number | null;
 };
 
 export type RangeFilterInput = {
@@ -12,12 +12,17 @@ export type RangeFilterInput = {
   end?: Date | number | null;
 };
 
+type RangeFilterState = {
+  start?: Date | null;
+  end?: Date | null;
+};
+
 type RangeFilterProps = {
   defaultFilter?: RangeFilterInput;
   onChange?: (filter: RangeFilterOutput) => void;
 };
 
-function normalizeInput(input: RangeFilterInput): RangeFilterOutput {
+function normalizeInput(input: RangeFilterInput): RangeFilterState {
   return {
     start: typeof input.start === 'number' ? new Date(input.start) : input.start ?? null,
     end: typeof input.end === 'number' ? new Date(input.end) : input.end ?? null,
@@ -28,12 +33,17 @@ const RangeFilter = ({
   defaultFilter = { start: null, end: null },
   onChange,
 }: RangeFilterProps) => {
-  const [{ start, end }, setFilter] = useState<RangeFilterOutput>(normalizeInput(defaultFilter));
+  const [{ start = null, end = null }, setFilter] = useState<RangeFilterState>(
+    normalizeInput(defaultFilter),
+  );
 
   const setStart = useCallback(
     (date: Date | null) => {
       setFilter((filter) => ({ ...filter, start: date }));
-      onChange?.({ start: date, end });
+      onChange?.({
+        start: date instanceof Date ? date.getTime() : date,
+        end: end instanceof Date ? end.getTime() : end,
+      });
     },
     [onChange, end],
   );
@@ -41,7 +51,10 @@ const RangeFilter = ({
   const setEnd = useCallback(
     (date: Date | null) => {
       setFilter((filter) => ({ ...filter, end: date }));
-      onChange?.({ start, end: date });
+      onChange?.({
+        start: start instanceof Date ? start.getTime() : start,
+        end: date instanceof Date ? date.getTime() : date,
+      });
     },
     [onChange, start],
   );

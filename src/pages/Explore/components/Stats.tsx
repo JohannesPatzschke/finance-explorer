@@ -3,15 +3,27 @@ import dayjs from 'dayjs';
 import { Stat, StatLabel, StatNumber, HStack, StatHelpText, StatArrow } from '@chakra-ui/react';
 import useFilteredTransactions from '@hooks/useFilteredTransactions';
 import { toCurrency } from '@utils/currency';
+import { normalizeTimestamp } from '@utils/date';
 
-const DAYS_PER_MONTH = 30.4375;
+type StatsProps = {
+  start?: number | null;
+  end?: number | null;
+};
 
-const Stats = () => {
+const DAYS_PER_MONTH = 365.25 / 12;
+
+const Stats = ({ start, end }: StatsProps) => {
   const transactions = useFilteredTransactions();
 
-  const diffDays = dayjs
-    .unix(transactions[0]?.timestamp)
-    .diff(dayjs.unix(transactions[transactions.length - 1]?.timestamp), 'days');
+  const diffDays =
+    dayjs(normalizeTimestamp(end ?? transactions[0]?.timestamp))
+      .endOf('day')
+      .diff(
+        dayjs(
+          normalizeTimestamp(start ?? transactions[transactions.length - 1]?.timestamp),
+        ).startOf('day'),
+        'hours',
+      ) / 24;
 
   const income = useMemo(
     () => transactions.reduce((sum, { amount }) => (amount >= 0 ? sum + amount : sum), 0),

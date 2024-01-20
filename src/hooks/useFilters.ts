@@ -10,7 +10,7 @@ type FiltersStore = {
   categoryMap: CategoryFilterMapType;
   setFilters: (filters: Pick<FiltersStore, 'categoryMap'>) => void;
   resetFilters: () => void;
-  setRange: (range: { start?: Date | null; end?: Date | null }) => void;
+  setRange: (range: { start?: Date | number | null; end?: Date | number | null }) => void;
   setCategory(categoryId: string, values: boolean | Array<string>): void;
 };
 

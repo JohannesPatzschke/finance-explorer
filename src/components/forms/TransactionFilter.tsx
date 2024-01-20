@@ -1,34 +1,40 @@
 import React from 'react';
 import { Card, CardBody, Stack } from '@chakra-ui/react';
 import CategoryFilterSelect from '@components/forms/CategoryFilterSelect';
-import RangeFilter, { RangeFilterOutput } from '@components/forms/RangeFilter';
-import useFilters from '@hooks/useFilters';
-import { shallow } from 'zustand/shallow';
+import RangeFilter from '@components/forms/RangeFilter';
+import { DateFilterType, CategoryFilterMapType } from '@models/Filters';
 
 type TransactionFilterProps = {
-  onChange?: (filter: any) => void;
+  defaultFilter?: {
+    start?: DateFilterType;
+    end?: DateFilterType;
+    categoryMap?: CategoryFilterMapType;
+  };
+  onRangeChange?: (filter: { start: DateFilterType; end: DateFilterType }) => void;
+  onCategoryChange?: (categoryId: string, values: boolean | Array<string>) => void;
 };
 
-const TransactionFilter = ({ onChange }: TransactionFilterProps) => {
-  const [start = null, end = null, categoryMap, setRange, setCategory] = useFilters(
-    (state) => [state.start, state.end, state.categoryMap, state.setRange, state.setCategory],
-    shallow,
-  );
-
-  const onRangeChange = (filter: RangeFilterOutput) => {
-    setRange(filter);
-  };
-
-  const onCategoryChange = (categoryId: string, values: boolean | Array<string>) => {
-    setCategory(categoryId, values);
-  };
-
+const TransactionFilter = ({
+  defaultFilter,
+  onRangeChange,
+  onCategoryChange,
+}: TransactionFilterProps) => {
   return (
     <Card variant="outline">
       <CardBody>
         <Stack spacing={8} direction="row">
-          <RangeFilter defaultFilter={{ start, end }} onChange={onRangeChange} />
-          <CategoryFilterSelect categoryMap={categoryMap} onChange={onCategoryChange} />
+          {onRangeChange && (
+            <RangeFilter
+              defaultFilter={{ start: defaultFilter?.start, end: defaultFilter?.end }}
+              onChange={onRangeChange}
+            />
+          )}
+          {onCategoryChange && (
+            <CategoryFilterSelect
+              categoryMap={defaultFilter?.categoryMap ?? {}}
+              onChange={onCategoryChange}
+            />
+          )}
         </Stack>
       </CardBody>
     </Card>
