@@ -1,29 +1,19 @@
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { normalizeCSVValue, normalizeCurrencyNumber } from './common';
+import { normalizeCSVValue, normalizeCurrencyNumber, normalizeAccountNumber } from './common';
 import type { AccountType } from '../models/Account';
 import type { TransactionType } from '../models/Transaction';
 
 dayjs.extend(customParseFormat);
 
-export function parseCSV(text: string): {
+export function parseCSV(
+  text: string,
+  accountNumber: string,
+): {
   account: Omit<AccountType, 'owner'>;
   transactions: Array<TransactionType>;
 } {
-  const [number, , from, to, , , , ...rest] = text.split('\n');
-
-  const [, numberHit] = /"(\w+) \/ (\w+)"/.exec(number) ?? [];
-  const [, fromHit] = /"(\d{2}\.\d{2}\.\d{4})"/.exec(from) ?? [];
-  const [, toHit] = /"(\d{2}\.\d{2}\.\d{4})"/.exec(to) ?? [];
-
-  const account = {
-    number: numberHit,
-    from: dayjs(fromHit, 'DD.MM.YYYY').unix(),
-    to: dayjs(toHit, 'DD.MM.YYYY').unix(),
-    createdAt: dayjs().unix(),
-  };
-
-  const accountId = [account.number, account.from, account.to].join('_');
+  const number = normalizeAccountNumber(accountNumber);
 
   /**
    * It happens that separate entries generate the same ID. Therefore we keep track of them
@@ -31,28 +21,33 @@ export function parseCSV(text: string): {
    */
   const transactionIndexMap: Record<string, number> = {};
 
-  const transactions = rest.map((row) => {
+  const lines = text.split('\n').slice(5);
+
+  const transactions = lines.map((row) => {
     const [
       bookingDay,
       valuation,
-      text,
+      status,
+      payer,
       client,
       note,
+      text,
       accountNumber,
-      postalCode,
       amount,
       creditorId,
       mandateReference,
       customerReferenz,
     ] = row.split(';').map(normalizeCSVValue);
 
-    const parsedDate = dayjs(bookingDay, 'DD.MM.YYYY');
+    const parsedDate = dayjs(bookingDay, 'DD.MM.YY');
 
     if (!parsedDate.isValid()) {
-      throw new Error('Invalid date');
+      throw new Error(`Invalid date: ${bookingDay}`);
     }
 
-    let transactionId = [numberHit, bookingDay, amount].join('_');
+    const normalizedAmount = normalizeCurrencyNumber(amount);
+
+    let transactionId = [number, parsedDate.format('DD.MM.YYYY'), normalizedAmount].join('_');
 
     if (transactionIndexMap[transactionId]) {
       transactionIndexMap[transactionId] += 1;
@@ -64,24 +59,31 @@ export function parseCSV(text: string): {
 
     return {
       id: transactionId,
-      accountIds: [accountId],
-      accountNumber: numberHit,
+      accountNumber: number,
       text,
       client,
       note,
       timestamp: parsedDate.unix(),
-      amount: normalizeCurrencyNumber(amount),
+      amount: normalizedAmount,
     };
   });
 
+  const to = transactions[0].timestamp;
+  const from = transactions[transactions.length - 1].timestamp;
+
+  const accountId = [number, from, to].join('_');
+
   return {
     account: {
-      ...account,
       id: accountId,
+      number,
       bank: 'DKB',
       type: 'Giro',
       transactionCount: transactions.length,
+      from,
+      to,
+      createdAt: dayjs().unix(),
     },
-    transactions,
+    transactions: transactions.map((transaction) => ({ ...transaction, accountIds: [accountId] })),
   };
 }

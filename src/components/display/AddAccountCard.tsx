@@ -39,7 +39,9 @@ const AddAccountModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => 
       const text = e?.target?.result ?? '';
 
       const { account, transactions } =
-        plugin === 'dkb' ? parseDKB(text.toString()) : parseN26(text.toString(), number ?? '');
+        plugin === 'dkb'
+          ? parseDKB(text.toString(), number ?? '')
+          : parseN26(text.toString(), number ?? '');
 
       addAccount({ ...account, owner });
       addTransactions(transactions);
