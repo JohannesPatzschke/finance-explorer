@@ -44,22 +44,22 @@ const Stats = ({ start, end }: StatsProps) => {
     <HStack>
       <Stat>
         <StatLabel>Inflow</StatLabel>
-        <StatNumber>{toCurrency(income)} €</StatNumber>
-        <StatHelpText>ø per month {toCurrency(incomePerMonth)} €</StatHelpText>
+        <StatNumber>{toCurrency(income)}</StatNumber>
+        <StatHelpText>ø per month {toCurrency(incomePerMonth)}</StatHelpText>
       </Stat>
       <Stat>
         <StatLabel>Outflow</StatLabel>
-        <StatNumber>{toCurrency(outcome)} €</StatNumber>
-        <StatHelpText>ø per month {toCurrency(outcomePerMonth)} €</StatHelpText>
+        <StatNumber>{toCurrency(outcome)}</StatNumber>
+        <StatHelpText>ø per month {toCurrency(outcomePerMonth)}</StatHelpText>
       </Stat>
       <Stat>
         <StatLabel>Bilance</StatLabel>
         <StatNumber color={bilance >= 0 ? 'green.300' : 'red.300'}>
-          {toCurrency(bilance)} €
+          {toCurrency(bilance)}
         </StatNumber>
         <StatHelpText>
           <StatArrow type={bilancePerMonth > 0 ? 'increase' : 'decrease'} />ø per month{' '}
-          {toCurrency(bilancePerMonth)} €
+          {toCurrency(bilancePerMonth)}
         </StatHelpText>
       </Stat>
     </HStack>
