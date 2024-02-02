@@ -10,6 +10,7 @@ export const AccountObject = z.object({
   from: z.number(),
   to: z.number(),
   createdAt: z.number(),
+  updatedAt: z.number().optional(),
 });
 
 export const AccountObjects = z.array(AccountObject);

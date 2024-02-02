@@ -74,7 +74,7 @@ const AddAccountCard = () => {
           <Heading size="md">Add Account</Heading>
         </CardHeader>
         <CardBody>
-          <Text>Upload a bank statement to add some transactions.</Text>
+          <Text>Upload a bank statement to add an account.</Text>
           <Text fontSize="xs" as="i">
             (Only DKB giro and N26 accounts are currently supported)
           </Text>

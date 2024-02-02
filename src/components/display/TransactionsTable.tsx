@@ -22,7 +22,7 @@ import { FiCheck } from 'react-icons/fi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useCategories from '@hooks/useCategories';
 import useTransactions from '@hooks/useTransactions';
-import CategoryMenu from '@components/overlay/CategoryMenu';
+import CategoryMenu from '@components/overlays/CategoryMenu';
 import type { TransactionType } from '@models/Transaction';
 
 const PAGE_SIZE = 20;
